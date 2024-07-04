@@ -47,7 +47,6 @@
           &lt 2 ESC   &kp A   &kp S   &kp D   &kp F   &kp G   &kp H   &kp J   &kp K     &kp L     &kp SEMI    &lt 2 SQT
           &kp LSHFT   &kp Z   &kp X   &kp C   &kp V   &kp B   &kp N   &kp M   &kp COMMA &kp DOT   &kp SLASH   &mt LSHFT ENTER
                               &mt LALT LPAR   &lt 1 SPACE    &mt LGUI ENTER    &lt 1 SPACE   &mt RCTRL RPAR
-
             >;
         };
 
