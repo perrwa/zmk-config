@@ -1,5 +1,14 @@
+name: Build ZMK firmware
+
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
+    name: 'zmk-config Build'
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+
+  publish:
+    name: 'zmk-config Publish'
+    uses: qmk/.github/.github/workflows/qmk_userspace_publish.yml@main
+    if: always() && !cancelled()
+    needs: build
