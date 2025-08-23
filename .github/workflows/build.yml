@@ -17,18 +17,18 @@ jobs:
       - name: Download firmware artifact
         uses: actions/download-artifact@v4
         with:
-          name: firmware
+          name: firmware.zip
           path: ./release
 
       - name: Rename firmware zip with tag
-        run: mv ./release/firmware ./release/firmware-${{ github.ref_name }}
+        run: mv ./release/firmware.zip ./release/firmware-${{ github.ref_name }}.zip
 
       - name: Create GitHub Release (draft prerelease with notes)
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
-          files: ./release/firmware-${{ github.ref_name }}
+          files: ./release/firmware-${{ github.ref_name }}.zip
           draft: true
           prerelease: true
           generate_release_notes: true
