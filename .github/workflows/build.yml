@@ -5,6 +5,9 @@ on:
       - "v*" # only run on tags like v1.0.0
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3
