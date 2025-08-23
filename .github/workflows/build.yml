@@ -1,10 +1,8 @@
 name: Build ZMK firmware
-
 on:
   push:
     tags:
-      - "release" # Triggers release job on 'release' tag
-  pull_request:
+      - "v*" # only run on tags like v1.0.0
   workflow_dispatch:
 
 jobs:
@@ -12,31 +10,27 @@ jobs:
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3
 
   release:
-    if: startsWith(github.ref, 'refs/tags/release')
-    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
     needs: build
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
       - name: Download firmware artifact
         uses: actions/download-artifact@v4
         with:
           name: firmware
-          path: ./firmware
-      - name: Rename firmware artifact with datetime
-        run: |
-          DATE=$(date +"%Y%m%d-%H%M%S")
-          ARTIFACT_NAME="firmware-$DATE.zip"
-          mv ./firmware ./firmware-tmp
-          zip -r "$ARTIFACT_NAME" ./firmware-tmp
-          echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+          path: ./release
+
+      - name: Rename firmware zip with tag
+        run: mv ./release/firmware.zip ./release/firmware-${{ github.ref_name }}.zip
+
+      - name: Create GitHub Release (draft prerelease with notes)
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          body: |
-            Automated release for tag ${{ github.ref_name }}.
-          files: ${{ env.ARTIFACT_NAME }}
+          name: ${{ github.ref_name }}
+          files: ./release/firmware-${{ github.ref_name }}.zip
+          draft: true
+          prerelease: true
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
