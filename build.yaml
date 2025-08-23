@@ -26,16 +26,16 @@ include:
   - board: nice_nano_v2
     shield: settings_reset
 
-  - board: raytac_mdbt50q_rx
-    shield: corne_dongle
-  - board: raytac_mdbt50q_rx
-    shield: settings_reset
+  # - board: raytac_mdbt50q_rx
+  #   shield: corne_dongle
+  # - board: raytac_mdbt50q_rx
+  #   shield: settings_reset
 
-  - board: nice_nano_v2
-    shield: corne_left
-    cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
-    artifact-name: corne_dongle_lside
-  - board: nice_nano_v2
-    shield: corne_right
-    cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
-    artifact-name: corne_dongle_rside
+  # - board: nice_nano_v2
+  #   shield: corne_left
+  #   cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
+  #   artifact-name: corne_dongle_lside
+  # - board: nice_nano_v2
+  #   shield: corne_right
+  #   cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
+  #   artifact-name: corne_dongle_rside
