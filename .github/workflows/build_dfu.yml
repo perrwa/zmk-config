@@ -38,7 +38,7 @@ jobs:
       - name: Install Zephyr SDK and Python packages
         run: |
           west zephyr-export
-          west packages install --system
+          west packages pip --install
           west sdk install
 
       - name: Build ZMK firmware and HEX
