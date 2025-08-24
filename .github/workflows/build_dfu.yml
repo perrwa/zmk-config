@@ -19,27 +19,34 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Install system dependencies
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip python3-setuptools python3-wheel \
-            ninja-build gperf ccache dfu-util device-tree-compiler git cmake gcc-arm-none-eabi
+          sudo apt-get install -y ninja-build cmake gcc-arm-none-eabi gperf ccache dfu-util device-tree-compiler
+          pip install --upgrade pip
+          pip install west nrfutil
 
-      - name: Install West and NRF tools
+      - name: Set up Zephyr SDK and west
         run: |
-          pip3 install --upgrade pip
-          pip3 install west nrfutil pyelftools twisted pyserial
-          cd config
-          west init -l .
+          # Install Zephyr SDK
+          export ZEPHYR_SDK_INSTALL_DIR=$HOME/zephyr-sdk
+          wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.15.3/zephyr-sdk-0.15.3-linux-x86_64-setup.run
+          chmod +x zephyr-sdk-0.15.3-linux-x86_64-setup.run
+          ./zephyr-sdk-0.15.3-linux-x86_64-setup.run -- -d $ZEPHYR_SDK_INSTALL_DIR -y
+          export PATH=$ZEPHYR_SDK_INSTALL_DIR/arm-zephyr-eabi/bin:$PATH
+
+          # Initialize west workspace from your manifest
+          west init -l config
           west update
-          west zephyr-export
-          west sdk install
 
-      - name: Export Zephyr environment
-        run: |
-          cd config
-          source zephyr/zephyr-env.sh
-          cd ..
+          # Set environment variables for Zephyr
+          export ZEPHYR_BASE=$(pwd)/config/zephyr
+          west zephyr-export
 
       - name: Build ZMK firmware and HEX
         run: |
