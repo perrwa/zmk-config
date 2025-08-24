@@ -45,7 +45,8 @@ jobs:
 
       - name: Generate HEX for DFU
         run: |
-          west build -d build/${{ matrix.artifact-name }} -t zephyr.hex
+          west build -b ${{ matrix.board }} -s zmk/app -d build/${{ matrix.artifact-name }} -t zephyr.hex \
+              -- -DZMK_CONFIG=config
 
       - name: Package DFU zip
         run: |
