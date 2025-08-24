@@ -8,8 +8,8 @@ manifest:
     # See https://docs.zephyrproject.org/3.2.0/develop/west/manifest.html#projects
     # - name: rschenk
     #   url-base: https://github.com/rschenk
-    - name: rk2kk
-      url-base: https://github.com/rk2kk
+    - name: venator
+      url-base: https://github.com/venator
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -18,7 +18,7 @@ manifest:
     #   remote: rschenk
     #   revision: main
     - name: zmk-component-raytac-dongle
-      remote: rk2kk
+      remote: venator
       revision: main
   self:
     path: config
