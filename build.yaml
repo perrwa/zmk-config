@@ -28,10 +28,8 @@ include:
 
   - board: raytac_mdbt50q_cx_40
     shield: corne_dongle
-    cmake-args: -DCONFIG_BUILD_OUTPUT_HEX=y
   - board: raytac_mdbt50q_cx_40
     shield: settings_reset
-    cmake-args: -DCONFIG_BUILD_OUTPUT_HEX=y
 
   # - board: nice_nano_v2
   #   shield: corne_left
