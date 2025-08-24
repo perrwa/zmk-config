@@ -29,13 +29,21 @@ jobs:
         run: |
           pip3 install --upgrade pip
           pip3 install west nrfutil pyelftools twisted pyserial
-          west init -l config
+          cd config
+          west init -l .
           west update
           west zephyr-export
           west sdk install
 
+      - name: Export Zephyr environment
+        run: |
+          cd config
+          source zephyr/zephyr-env.sh
+          cd ..
+
       - name: Build ZMK firmware and HEX
         run: |
+          source config/zephyr/zephyr-env.sh
           west build -b ${{ matrix.board }} -s zmk/app -d build/${{ matrix.artifact-name }} -- -DZMK_CONFIG=config
           west build -d build/${{ matrix.artifact-name }} -t zephyr.hex
 
