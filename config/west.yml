@@ -6,14 +6,19 @@ manifest:
       url-base: https://github.com/zmkfirmware
     # Additional modules containing boards/shields/custom code can be listed here as well
     # See https://docs.zephyrproject.org/3.2.0/develop/west/manifest.html#projects
-    - name: rschenk
-      url-base: https://github.com/rschenk
+    # - name: rschenk
+    #   url-base: https://github.com/rschenk
+    - name: rk2kk
+      url-base: https://github.com/rk2kk
   projects:
     - name: zmk
       remote: zmkfirmware
       import: app/west.yml
+    # - name: zmk-component-raytac-dongle
+    #   remote: rschenk
+    #   revision: main
     - name: zmk-component-raytac-dongle
-      remote: rschenk
+      remote: rk2kk
       revision: main
   self:
     path: config
