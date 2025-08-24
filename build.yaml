@@ -19,23 +19,25 @@
 #
 ---
 include:
-  - board: nice_nano_v2
-    shield: corne_left
-  - board: nice_nano_v2
-    shield: corne_right
-  - board: nice_nano_v2
-    shield: settings_reset
+  # - board: nice_nano_v2
+  #   shield: corne_left
+  # - board: nice_nano_v2
+  #   shield: corne_right
+  # - board: nice_nano_v2
+  #   shield: settings_reset
 
-  - board: raytac_mdbt50q_rx
+  - board: raytac_mdbt50q_cx_40
     shield: corne_dongle
-  - board: raytac_mdbt50q_rx
+    cmake-args: -DCONFIG_BUILD_OUTPUT_HEX=y
+  - board: raytac_mdbt50q_cx_40
     shield: settings_reset
+    cmake-args: -DCONFIG_BUILD_OUTPUT_HEX=y
 
-  - board: nice_nano_v2
-    shield: corne_left
-    cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
-    artifact-name: corne_dongle_left-zmk
-  - board: nice_nano_v2
-    shield: corne_right
-    cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
-    artifact-name: corne_dongle_right-zmk
+  # - board: nice_nano_v2
+  #   shield: corne_left
+  #   cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
+  #   artifact-name: corne_dongle_left-zmk
+  # - board: nice_nano_v2
+  #   shield: corne_right
+  #   cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
+  #   artifact-name: corne_dongle_right-zmk
