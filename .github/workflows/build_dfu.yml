@@ -30,13 +30,10 @@ jobs:
           pip3 install --upgrade pip
           pip3 install west nrfutil
 
-      - name: Initialize west workspace
+      - name: Initialize west/Zephyr workspace
         run: |
           west init -l config
           west update
-
-      - name: Install Zephyr SDK and Python packages
-        run: |
           west zephyr-export
           west packages pip --install
           west sdk install
