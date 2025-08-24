@@ -1,9 +1,6 @@
-name: Build ZMK firmware DFU and HEX
+name: Build ZMK DFU Firmware
 on:
   workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
   build:
@@ -11,54 +8,54 @@ jobs:
     strategy:
       matrix:
         include:
-          # - board: nice_nano_v2
-          #   shield: corne_left
-          #   artifact-name: corne_left
-          # - board: nice_nano_v2
-          #   shield: corne_right
-          #   artifact-name: corne_right
           - board: raytac_mdbt50q_cx_40
             shield: corne_dongle
             artifact-name: corne_dongle
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.x
-
-      - name: Install nrfutil
-        run: pip install nrfutil
-
-      - name: Set up Zephyr/West
+      - name: Install system dependencies
         run: |
-          # install west/zephyr SDK as needed
-          pip install west
+          sudo apt-get update
+          sudo apt-get install -y python3-pip python3-setuptools python3-wheel \
+            ninja-build gperf ccache dfu-util device-tree-compiler wget git cmake gcc-arm-none-eabi
+
+      - name: Install Python dependencies
+        run: |
+          pip3 install --upgrade pip
+          pip3 install west nrfutil
+
+      - name: Initialize west workspace
+        run: |
           west init -l config
           west update
 
-      - name: Build ZMK firmware
+      - name: Set up Zephyr SDK (official method)
         run: |
-          west build -b ${{ matrix.board }} -s zmk/app -d build/${{ matrix.artifact-name }} \
-            -- -DZMK_CONFIG=config
+          pip3 install -r config/zephyr/scripts/requirements.txt
+          # Export Zephyr environment variables
+          export ZEPHYR_BASE=$(pwd)/config/zephyr
+          west zephyr-export
+        shell: bash
 
-      - name: Generate HEX for DFU
+      - name: Build ZMK firmware and HEX
         run: |
-          west build -b ${{ matrix.board }} -s zmk/app -d build/${{ matrix.artifact-name }} -t zephyr.hex \
-              -- -DZMK_CONFIG=config
+          west build -b ${{ matrix.board }} -s zmk/app -d build/${{ matrix.artifact-name }} -- -DZMK_CONFIG=config
+          west build -b ${{ matrix.board }} -s zmk/app -d build/${{ matrix.artifact-name }} -t zephyr.hex -- -DZMK_CONFIG=config
 
       - name: Package DFU zip
         run: |
+          mkdir -p release
           nrfutil pkg generate \
             --application build/${{ matrix.artifact-name }}/zephyr.hex \
             --hw-version 52 \
             --sd-req 0x00 \
             release/firmware-${{ matrix.artifact-name }}.zip
 
-      - name: Upload Artifacts
+      - name: Upload DFU Artifact
         uses: actions/upload-artifact@v4
         with:
           name: firmware
-          path: |
-            release/firmware-${{ matrix.artifact-name }}.zip
+          path: release/firmware-${{ matrix.artifact-name }}.zip
