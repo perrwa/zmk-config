@@ -1,0 +1,45 @@
+layout: {zmk_keyboard: corne}
+layers:
+  'perrwa/corne':
+  - {t: $$material:keyboard_tab$$, s: '`', h: '', right: ''}
+  - {t: Q, s: 1, h: '', right: ''}
+  - {t: W, s: 2, h: $$material:no_sound$$, right: ''} 
+  - {t: E, s: 3, h: $$material:volume_down$$, right: ''}
+  - {t: R, s: 4, h: $$material:volume_up$$, right: ''}
+  - {t: T, s: 5, h: '', right: $$material:power_off$$}
+  - {t: Y, s: 6, h: $$material:keyboard_double_arrow_left$$, right: ''}
+  - {t: U, s: 7, h: $$material:keyboard_double_arrow_down$$, right: 7}
+  - {t: I, s: 8, h: $$material:keyboard_double_arrow_up$$, right: 8}
+  - {t: O, s: 9, h: $$material:keyboard_double_arrow_right$$, right: 9}
+  - {t: P, s: 0, h: '', right: '+'}
+  - {t: $$material:keyboard_backspace$$, s: '\', h: DEL, right: '*'}
+  - {t: $$material:logout$$, left: $$more_down$$, s: $$calculate$$, h: '', right: ''}
+  - {t: A, s: '', h: '', right: ''}
+  - {t: S, s: '', h: $$material:skip_previous$$, right: ''}
+  - {t: D, s: $$material:switch_left$$, h: $$material:play_pause$$, right: ''}
+  - {t: F, s: $$material:switch_right$$, h: $$material:skip_next$$, right: ''}
+  - {t: G, s: '[', h: '', right: ''}
+  - {t: H, s: ']', h: $$material:arrow_left$$, right: ''}
+  - {t: J, s: '-', h: $$material:arrow_drop_down$$, right: 4}
+  - {t: K, s: '=', h: $$material:arrow_drop_up$$, right: 5}
+  - {t: L, s: '', h: $$material:arrow_right$$, right: 6}
+  - {t: ;, s: '', h: '', right: '-'}
+  - {t: '''', s: '', h: ▽, right: '/'}
+  - {t: $$material:shift$$, s: ▽, h: ▽, right: ''}
+  - {t: Z, s: F1, h: '', right: ''}
+  - {t: X, s: F2, h: '', right: ''}
+  - {t: C, s: F3, h: '', right: ''}
+  - {t: V, s: F4, h: '', right: ''}
+  - {t: B, s: F5, h: '', right: ''}
+  - {t: N, s: F6, h: '', right: ''}
+  - {t: M, s: F7, h: '', right: 1}
+  - {t: ',', s: F8, h: '', right: 2}
+  - {t: '.', s: F9, h: '', right: 3}
+  - {t: '/', s: F10, h: '', right: ''}
+  - {t: $$material:keyboard_return$$, left: $$material:shift$$, s: ▽, h: '', right: ''}
+  - {t: (, left: $$material:keyboard_option_key$$, s: ▽, h: ▽, right: ▽}
+  - {t: $$material:space_bar$$, left: $$more_up$$, s: '', h: $$calculate$$, right: ''}
+  - {t: $$material:keyboard_return$$, left: $$material:keyboard_command_key$$, s: ▽, h: ▽}
+  - {t: $$material:keyboard_return$$, left: $$material:keyboard_command_key$$, s: ▽, h: ▽, right: ▽}
+  - {t: $$material:space_bar$$, left: $$more_up$$, s: ▽, h: '', right: 0}
+  - {t: ), left: $$material:keyboard_control_key$$, s: ▽, h: ▽, right: '.'}
