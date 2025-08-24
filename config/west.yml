@@ -19,5 +19,6 @@ manifest:
     #   revision: main
     - name: zmk-component-raytac-dongle
       remote: rk2kk
+      revision: main
   self:
     path: config
