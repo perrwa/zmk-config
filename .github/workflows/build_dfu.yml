@@ -38,12 +38,10 @@ jobs:
           west init -l config
           west update
 
-      - name: Build ZMK firmware UF2
+      - name: Build ZMK firmware
         run: |
-          west build -b ${{ matrix.board }} -s app -d build/${{ matrix.artifact-name }} \
+          west build -b ${{ matrix.board }} -s zmk/app -d build/${{ matrix.artifact-name }} \
             -- -DZMK_CONFIG=config
-          # optional: generate UF2 if your current workflow needs it
-          west build -d build/${{ matrix.artifact-name }} -t uf2
 
       - name: Generate HEX for DFU
         run: |
@@ -62,5 +60,4 @@ jobs:
         with:
           name: firmware
           path: |
-            build/${{ matrix.artifact-name }}/*.uf2
             release/firmware-${{ matrix.artifact-name }}.zip
