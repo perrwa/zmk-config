@@ -35,7 +35,7 @@ jobs:
         run: |
           # install west/zephyr SDK as needed
           pip install west
-          west init -l .
+          west init -l config
           west update
 
       - name: Build ZMK firmware UF2
