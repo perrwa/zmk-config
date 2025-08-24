@@ -4,29 +4,35 @@
 # https://docs.zephyrproject.org/latest/boards/raytac/mdbt50q_cx_40_dongle/doc/index.html#
 
 # Variables
-DIR        ?= .
+DIR        ?= ./firmware
 NRFUTIL    ?= nrfutil nrf5sdk-tools
 
+KEY_FILE   ?= private.pem
 BIN_FILES  := $(wildcard $(DIR)/*.bin)
 ZIP_FILES  := $(BIN_FILES:.bin=.zip)
 
-.PHONY: all dfu flash clean
+# DEFAULT AND PHONY TARGETS
+.DEFAULT_GOAL := help
+.PHONY: dfu flash clean help
 
-all: dfu
+help:  ## Show this help message
+	@echo "Available targets:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
-dfu:
+dfu: has_key clean  ## Create DFU packages from .bin files
 	@for bin in $(BIN_FILES); do \
 		zip="$${bin%.bin}.zip"; \
 		echo "Creating DFU package: $$zip"; \
 		$(NRFUTIL) pkg generate \
 			--hw-version 52 \
 			--sd-req=0x00 \
+			--key-file "$(KEY_FILE)" \
 			--application "$$bin" \
 			--application-version 1 \
 			"$$zip"; \
 	done
 
-flash:
+flash:  ## Flash a selected DFU package to a selected serial port
 	@SERIALS=($(shell ls /dev/tty.usb* 2>/dev/null)); \
 	if [ $${#SERIALS[@]} -eq 0 ]; then \
 		echo "No /dev/tty.usb* serial ports found."; exit 1; \
@@ -42,9 +48,15 @@ flash:
 	echo "\nAvailable DFU packages:"; \
 	for i in $${!ZIPS[@]}; do echo "$$((i+1)): $${ZIPS[$$i]}"; done; \
 	read -p "Select DFU package [1-$${#ZIPS[@]}]: " zidx; \
+
 	PKG=$${ZIPS[$$(($$zidx-1))]}; \
 	echo "\nFlashing $$PKG to $$PORT..."; \
 	$(NRFUTIL) dfu usb-serial -pkg \"$$PKG\" -p \"$$PORT\"
 
-clean:
-	rm -f $(DIR)/*.zip
+clean:  ## Remove all generated .zip DFU packages
+	@rm -f $(DIR)/*.zip
+
+has_key:  ## Check if the key file exists
+	@if [ ! -f "$(KEY_FILE)" ]; then \
+		$(NRFUTIL) keys generate $(KEY_FILE); \
+	fi
