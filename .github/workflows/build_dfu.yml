@@ -1,5 +1,8 @@
 name: Build ZMK DFU Firmware
 on:
+  push:
+    tags:
+      - "v*"
   workflow_dispatch:
 
 jobs:
@@ -20,9 +23,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y python3-pip python3-setuptools python3-wheel \
-            ninja-build gperf ccache dfu-util device-tree-compiler wget git cmake gcc-arm-none-eabi
+            ninja-build gperf ccache dfu-util device-tree-compiler git cmake gcc-arm-none-eabi
 
-      - name: Install Python dependencies
+      - name: Install West and NRF tools
         run: |
           pip3 install --upgrade pip
           pip3 install west nrfutil
@@ -32,18 +35,16 @@ jobs:
           west init -l config
           west update
 
-      - name: Set up Zephyr SDK (official method)
+      - name: Install Zephyr SDK and Python packages
         run: |
-          pip3 install -r config/zephyr/scripts/requirements.txt
-          # Export Zephyr environment variables
-          export ZEPHYR_BASE=$(pwd)/config/zephyr
           west zephyr-export
-        shell: bash
+          west packages install --system
+          west sdk install
 
       - name: Build ZMK firmware and HEX
         run: |
           west build -b ${{ matrix.board }} -s zmk/app -d build/${{ matrix.artifact-name }} -- -DZMK_CONFIG=config
-          west build -b ${{ matrix.board }} -s zmk/app -d build/${{ matrix.artifact-name }} -t zephyr.hex -- -DZMK_CONFIG=config
+          west build -d build/${{ matrix.artifact-name }} -t zephyr.hex
 
       - name: Package DFU zip
         run: |
