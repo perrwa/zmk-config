@@ -1,1 +1,13 @@
+.env
+
+# macOS system files
 .DS_Store
+._*
+
+# Editor swap/junk files
+*.bak
+*.swp
+*~
+
+# VSCode settings folder
+.vscode/
