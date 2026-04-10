@@ -40,11 +40,21 @@ Keymap images are generated using [keymap-drawer](https://github.com/caksoylar/k
 ![Corne Keymap PNG](keymap-drawer/corne.png)
 
 
+## Build Configurations
+
+The `build.yaml` defines two setups for GitHub Actions CI:
+
+- **No-dongle (direct split)** — left half is central, right half is peripheral, connected over BLE
+- **Dongle setup** — Raytac MDBT50Q-RX dongle acts as central; both halves are peripherals (overridden via `-DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`)
+
+Both setups include a `settings_reset` firmware for their respective boards.
+
 ## Files Overview
 
-- `boards/shields/corne/`: Raytac dongle-specific shield and overlay files
-- `config/`: Main Corne configuration and keymap files
-- `keymap-drawer/`: keymap-drawer artifacts and configs
+- `boards/shields/corne/` — Raytac dongle-specific shield and overlay files
+- `config/` — Main Corne configuration and keymap files
+- `keymap-drawer/` — keymap-drawer artifacts and configs
+- `build.yaml` — GitHub Actions build matrix
 
 ## Resources
 
