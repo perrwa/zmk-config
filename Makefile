@@ -9,7 +9,9 @@ NRFUTIL    ?= nrfutil nrf5sdk-tools
 
 KEY_FILE   ?= private.pem
 BIN_FILES  := $(wildcard $(DIR)/*.bin)
-ZIP_FILES  := $(BIN_FILES:.bin=.zip)
+HEX_FILES  := $(wildcard $(DIR)/*.hex)
+FW_FILES   := $(BIN_FILES) $(HEX_FILES)
+ZIP_FILES  := $(patsubst %.bin,%.zip,$(patsubst %.hex,%.zip,$(FW_FILES)))
 
 # DEFAULT AND PHONY TARGETS
 .DEFAULT_GOAL := help
@@ -19,15 +21,15 @@ help:  ## Show this help message
 	@echo "Available targets:"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
-dfu: has_key clean  ## Create DFU packages from .bin files
-	@for bin in $(BIN_FILES); do \
-		zip="$${bin%.bin}.zip"; \
+dfu: has_key clean  ## Create DFU packages from .bin/.hex files
+	@for fw in $(FW_FILES); do \
+		zip="$${fw%.*}.zip"; \
 		echo "Creating DFU package: $$zip"; \
 		$(NRFUTIL) pkg generate \
 			--hw-version 52 \
 			--sd-req=0x00 \
 			--key-file "$(KEY_FILE)" \
-			--application "$$bin" \
+			--application "$$fw" \
 			--application-version 1 \
 			"$$zip"; \
 	done
