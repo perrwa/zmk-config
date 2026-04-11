@@ -13,12 +13,16 @@ This configuration is designed for:
 ## Repository Structure
 
 ```
+├── .github/
+│   ├── copilot-instructions.md
+│   └── workflows/
+│       └── build.yml
 ├── boards/
 │   └── shields/
 │       └── corne_dongle/
+│           ├── Kconfig.shield
 │           ├── corne_dongle.conf
-│           ├── corne_dongle.overlay
-│           └── Kconfig.shield
+│           └── corne_dongle.overlay
 ├── config/
 │   ├── corne.conf
 │   ├── corne.keymap
@@ -31,6 +35,7 @@ This configuration is designed for:
 ├── zephyr/
 │   └── module.yml
 ├── build.yaml
+├── Makefile
 ```
 
 ## Keymap Visualization
@@ -42,19 +47,22 @@ Keymap images are generated using [keymap-drawer](https://github.com/caksoylar/k
 
 ## Build Configurations
 
-The `build.yaml` defines two setups for GitHub Actions CI:
+The `build.yaml` defines a **dongle setup** for GitHub Actions CI:
 
-- **No-dongle (direct split)** — left half is central, right half is peripheral, connected over BLE
-- **Dongle setup** — Raytac MDBT50Q-RX dongle acts as central; both halves are peripherals (overridden via `-DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`)
+- **Raytac MDBT50Q-RX dongle** acts as the BLE central (`corne_dongle` shield)
+- **Nice!Nano v2 halves** are both peripherals (overridden via `-DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`)
+- **`settings_reset`** firmware is included for both boards
 
-Both setups include a `settings_reset` firmware for their respective boards.
+Firmware builds on version tags (`v*`) or manual workflow dispatch.
 
 ## Files Overview
 
-- `boards/shields/corne_dongle/` — Raytac dongle-specific shield and overlay files
-- `config/` — Main Corne configuration and keymap files
-- `keymap-drawer/` — keymap-drawer artifacts and configs
+- `boards/shields/corne_dongle/` — Raytac dongle-specific shield, overlay, and Kconfig
+- `config/` — Main Corne configuration (`corne.conf`) and keymap (`corne.keymap`)
+- `keymap-drawer/` — [keymap-drawer](https://github.com/caksoylar/keymap-drawer) config and generated visualizations
+- `zephyr/module.yml` — Registers this repo as a Zephyr module (sets `board_root`)
 - `build.yaml` — GitHub Actions build matrix
+- `Makefile` — DFU packaging and serial flashing for the Raytac dongle (requires `nrfutil`)
 
 ## Resources
 
