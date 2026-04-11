@@ -219,8 +219,15 @@ path.combo {
 }
 /* End Tabler Icons Cleanup */
 
-.hold { fill: #FF7F50; }
-.held { fill: #ffeedd; }</style>
+.tap        { fill: #1A1F71; font-weight: bold; }
+.hold       { fill: #FF7F50; }
+.shifted    { fill: #00CED1; }
+.right      { fill: #9370DB; }
+.left       { fill: #FFD700; }
+.held       { fill: #ffeedd; }
+.more_down  { fill: #FF7F50 !important; }
+.more_up    { fill: #00CED1 !important; }
+.calculate  { fill: #9370DB !important; }</style>
 <g transform="translate(30, 0)" class="layer-Base">
 <text x="0" y="28" class="label" id="Base">Base:</text>
 <g transform="translate(0, 56)">
