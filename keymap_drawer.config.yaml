@@ -175,7 +175,7 @@ parse_config:
     KP_ASTERISK: "*"
     KP_SLASH: /
     KP_DOT: .
-    KP_NUM: NumLk
+    KP_NUM: $$material:123$$
 
   raw_binding_map:
     "&ext_power EP_OFF": $$material:power_off$$
