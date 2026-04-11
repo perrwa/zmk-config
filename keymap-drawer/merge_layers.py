@@ -10,6 +10,7 @@ Maps each layer to a different legend position on each key:
 The base layer's hold value (modifier/layer indicator) goes to 'left'.
 """
 
+import argparse
 import sys
 import yaml
 
@@ -32,7 +33,7 @@ def get_hold(key):
     return ""
 
 
-def merge_layers(input_path):
+def merge_layers(input_path, output_layer="Unified"):
     with open(input_path) as f:
         data = yaml.safe_load(f)
 
@@ -96,7 +97,7 @@ def merge_layers(input_path):
         else:
             merged.append(key)
 
-    output = {"layout": data.get("layout", {}), "layers": {"perrwa/corne": merged}}
+    output = {"layout": data.get("layout", {}), "layers": {output_layer: merged}}
 
     if "draw_config" in data:
         output["draw_config"] = data["draw_config"]
@@ -113,7 +114,14 @@ def merge_layers(input_path):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} <parsed-keymap.yaml>", file=sys.stderr)
-        sys.exit(1)
-    merge_layers(sys.argv[1])
+    parser = argparse.ArgumentParser(
+        description="Merge multi-layer keymap-drawer YAML into a single unified layer."
+    )
+    parser.add_argument("input", help="Path to parsed keymap YAML")
+    parser.add_argument(
+        "--output-layer",
+        default="Unified",
+        help="Name for the merged output layer (default: Unified)",
+    )
+    args = parser.parse_args()
+    merge_layers(args.input, output_layer=args.output_layer)

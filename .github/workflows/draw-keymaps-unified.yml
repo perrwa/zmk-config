@@ -28,6 +28,8 @@ jobs:
         run: pipx install west
 
       - name: Fetch west modules
+        # keymap-drawer bundles ZMK bindings, so we exclude zmk and zephyr
+        # to speed up the fetch — only the dongle module is needed here.
         run: |
           west init -l config
           west config --local manifest.project-filter " -zmk,-zephyr"
@@ -44,8 +46,14 @@ jobs:
           keymap -c keymap_drawer.config.yaml draw keymap-drawer/corne.yaml
           > keymap-drawer/corne.svg
 
+      - name: Install merge script dependencies
+        run: pip install pyyaml
+
       - name: Merge layers into unified view
-        run: python keymap-drawer/merge_layers.py keymap-drawer/corne.yaml > keymap-drawer/corne-unified.yaml
+        run: >
+          python keymap-drawer/merge_layers.py keymap-drawer/corne.yaml
+          --output-layer perrwa/corne
+          > keymap-drawer/corne-unified.yaml
 
       - name: Draw unified SVG
         run: >

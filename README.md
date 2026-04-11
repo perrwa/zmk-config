@@ -63,7 +63,7 @@ Firmware builds on version tags (`v*`) or manual workflow dispatch.
 
 - `boards/shields/corne_dongle/` — Raytac dongle-specific shield, overlay, and Kconfig
 - `config/` — Main Corne configuration (`corne.conf`) and keymap (`corne.keymap`)
-- `keymap-drawer/` — [keymap-drawer](https://github.com/caksoylar/keymap-drawer) generated visualizations (SVG, YAML, PNG) and merge script
+- `keymap-drawer/` — [keymap-drawer](https://github.com/caksoylar/keymap-drawer) generated visualizations (SVG, YAML) and merge script
 - `keymap-drawer/merge_layers.py` — Merges 4-layer parsed YAML into a single unified layer visualization
 - `keymap_drawer.config.yaml` — keymap-drawer styling and parse configuration
 - `zephyr/module.yml` — Registers this repo as a Zephyr module (sets `board_root`)
