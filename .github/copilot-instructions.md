@@ -1,0 +1,21 @@
+# Copilot Instructions
+
+Split Corne-Cherry v3.0.1 ZMK keyboard config. Nice!Nano v2 halves + Raytac MDBT50Q-RX dongle (BLE central). West manifest pins ZMK v0.3 + `rschenk/zmk-component-raytac-dongle`.
+
+## Build
+
+No local build/test. Firmware compiles in CI via ZMK's reusable workflow on version tags (`v*`) or manual dispatch. `build.yaml` defines the build matrix. Dongle halves override central role: `cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`.
+
+`make dfu` packages firmware for dongle flashing; `make flash` flashes interactively via serial. Requires `nrfutil nrf5sdk-tools`.
+
+## Keymap
+
+`config/corne.keymap` — Devicetree syntax, 4 layers: 0=QWERTY base, 1=symbols/F-keys, 2=nav/media, 3=numpad. Thumbs use `&mt` (mod-tap) and `&lt` (layer-tap). Layer access: hold Space→L1, hold Esc→L2, `&mo 3` from L1/L2.
+
+Each layer has QMK-style comment blocks above `bindings` showing visual layout — keep in sync when editing.
+
+`keymap-drawer/corne.yaml` is a **separate** visualization definition, not auto-generated — update manually with keymap changes.
+
+## Dongle BLE
+
+`BT_MAX_CONN` and `BT_MAX_PAIRED` must equal `ZMK_SPLIT_BLE_CENTRAL_PERIPHERALS` + desired BT profiles (see `boards/shields/corne/corne_dongle.conf`).
