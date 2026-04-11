@@ -17,8 +17,15 @@ draw_config:
   glyph_hold_size: 12
   glyph_shifted_size: 10
   svg_extra_style: |-
-    .hold { fill: #FF7F50; }
-    .held { fill: #ffeedd; }
+    .tap        { fill: #1A1F71; font-weight: bold; }
+    .hold       { fill: #FF7F50; }
+    .shifted    { fill: #00CED1; }
+    .right      { fill: #9370DB; }
+    .left       { fill: #FFD700; }
+    .held       { fill: #ffeedd; }
+    .more_down  { fill: #FF7F50 !important; }
+    .more_up    { fill: #00CED1 !important; }
+    .calculate  { fill: #9370DB !important; }
   glyphs:
     more_down: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path
       d="M200-200v-440h80v360h360v80H200Zm200-200v-440h80v360h360v80H400Z"/></svg>
