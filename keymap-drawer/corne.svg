@@ -1,5 +1,8 @@
 <svg width="690" height="1104" viewBox="0 0 690 1104" class="keymap" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <defs>/* start glyphs */
+<svg id="calculate">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M320-240h60v-80h80v-60h-80v-80h-60v80h-80v60h80v80Zm200-30h200v-60H520v60Zm0-100h200v-60H520v60Zm44-152 56-56 56 56 42-42-56-58 56-56-42-42-56 56-56-56-42 42 56 56-56 58 42 42Zm-314-70h200v-60H250v60Zm-50 472q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>
+</svg>
 <svg id="material:arrow_drop_down">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-360 280-559h400L480-360Z"/></svg>
 </svg>
@@ -80,6 +83,12 @@
 </svg>
 <svg id="material:volume_up">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M560-131v-62q97-28 158.5-107.5T780-481q0-101-61-181T560-769v-62q124 28 202 125.5T840-481q0 127-78 224.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm420 48v-337q55 17 87.5 64T660-480q0 57-33 104t-87 64ZM420-648 307-540H180v120h127l113 109v-337Zm-94 168Z"/></svg>
+</svg>
+<svg id="more_down">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M200-200v-440h80v360h360v80H200Zm200-200v-440h80v360h360v80H400Z"/></svg>
+</svg>
+<svg id="more_up">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M680-320v-360H320v-80h440v440h-80ZM480-120v-360H120v-80h440v440h-80Z"/></svg>
 </svg>
 </defs>/* end glyphs */
 <style>/* inherit to force styles through use tags */
@@ -263,9 +272,8 @@ path.combo {
 <g transform="translate(21, 79)" class="key keypos-12">
 <rect rx="6" ry="6" x="-19" y="-19" width="38" height="38" class="key"/>
 <use href="#material:logout" xlink:href="#material:logout" x="-7" y="-7" height="14" width="14.0" class="key tap glyph material:logout"/>
-<a href="#Nav">
-<text x="0" y="17" class="key hold layer-activator">Nav</text>
-</a></g>
+<use href="#more_down" xlink:href="#more_down" x="-6" y="5" height="12" width="12.0" class="key hold glyph more_down"/>
+</g>
 <g transform="translate(63, 79)" class="key keypos-13">
 <rect rx="6" ry="6" x="-19" y="-19" width="38" height="38" class="key"/>
 <text x="0" y="0" class="key tap">A</text>
@@ -367,9 +375,8 @@ path.combo {
 <g transform="translate(214, 160) rotate(15.0)" class="key keypos-37">
 <rect rx="6" ry="6" x="-19" y="-19" width="38" height="38" class="key"/>
 <use href="#material:space_bar" xlink:href="#material:space_bar" x="-7" y="-7" height="14" width="14.0" class="key tap glyph material:space_bar"/>
-<a href="#Symbols">
-<text x="0" y="17" class="key hold layer-activator">Symbols</text>
-</a></g>
+<use href="#more_up" xlink:href="#more_up" x="-6" y="5" height="12" width="12.0" class="key hold glyph more_up"/>
+</g>
 <g transform="translate(263, 168) rotate(30.0)" class="key keypos-38">
 <rect rx="6" ry="6" x="-19" y="-30" width="38" height="59" class="key"/>
 <use href="#material:keyboard_return" xlink:href="#material:keyboard_return" x="-7" y="-7" height="14" width="14.0" class="key tap glyph material:keyboard_return"/>
@@ -383,9 +390,8 @@ path.combo {
 <g transform="translate(416, 160) rotate(-15.0)" class="key keypos-40">
 <rect rx="6" ry="6" x="-19" y="-19" width="38" height="38" class="key"/>
 <use href="#material:space_bar" xlink:href="#material:space_bar" x="-7" y="-7" height="14" width="14.0" class="key tap glyph material:space_bar"/>
-<a href="#Symbols">
-<text x="0" y="17" class="key hold layer-activator">Symbols</text>
-</a></g>
+<use href="#more_up" xlink:href="#more_up" x="-6" y="5" height="12" width="12.0" class="key hold glyph more_up"/>
+</g>
 <g transform="translate(462, 154)" class="key keypos-41">
 <rect rx="6" ry="6" x="-19" y="-19" width="38" height="38" class="key"/>
 <text x="0" y="0" class="key tap">)</text>
@@ -446,9 +452,8 @@ path.combo {
 </g>
 <g transform="translate(21, 79)" class="key keypos-12">
 <rect rx="6" ry="6" x="-19" y="-19" width="38" height="38" class="key"/>
-<a href="#Numpad">
-<text x="0" y="0" class="key tap layer-activator">Numpad</text>
-</a></g>
+<use href="#calculate" xlink:href="#calculate" x="-7" y="-7" height="14" width="14.0" class="key tap glyph calculate"/>
+</g>
 <g transform="translate(63, 79)" class="key keypos-13">
 <rect rx="6" ry="6" x="-19" y="-19" width="38" height="38" class="key"/>
 </g>
@@ -695,9 +700,8 @@ path.combo {
 </g>
 <g transform="translate(214, 160) rotate(15.0)" class="key keypos-37">
 <rect rx="6" ry="6" x="-19" y="-19" width="38" height="38" class="key"/>
-<a href="#Numpad">
-<text x="0" y="0" class="key tap layer-activator">Numpad</text>
-</a></g>
+<use href="#calculate" xlink:href="#calculate" x="-7" y="-7" height="14" width="14.0" class="key tap glyph calculate"/>
+</g>
 <g transform="translate(263, 168) rotate(30.0)" class="key trans keypos-38">
 <rect rx="6" ry="6" x="-19" y="-30" width="38" height="59" class="key trans"/>
 <text x="0" y="0" class="key trans tap">▽</text>
