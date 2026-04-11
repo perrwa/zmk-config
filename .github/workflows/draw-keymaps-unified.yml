@@ -8,6 +8,10 @@ on:
       - "keymap_drawer.config.yaml"
       - "keymap-drawer/merge_layers.py"
 
+concurrency:
+  group: draw-keymaps-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   draw:
     runs-on: ubuntu-latest

@@ -37,24 +37,45 @@ def merge_layers(input_path):
         data = yaml.safe_load(f)
 
     layers = data.get("layers", {})
-    layer_names = list(layers.keys())
+    expected = ["Base", "Symbols", "Nav", "Numpad"]
+    actual = set(layers.keys())
 
-    if len(layer_names) < 4:
-        print(f"Error: expected 4 layers, found {len(layer_names)}", file=sys.stderr)
+    missing = [n for n in expected if n not in actual]
+    unexpected = sorted(actual - set(expected))
+    if missing or unexpected:
+        errors = []
+        if missing:
+            errors.append(f"missing: {', '.join(missing)}")
+        if unexpected:
+            errors.append(f"unexpected: {', '.join(unexpected)}")
+        print(
+            f"Error: expected layers {expected}; {'; '.join(errors)}",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
-    base = layers[layer_names[0]]
-    syms = layers[layer_names[1]]
-    nav = layers[layer_names[2]]
-    npad = layers[layer_names[3]]
+    base = layers["Base"]
+    syms = layers["Symbols"]
+    nav = layers["Nav"]
+    npad = layers["Numpad"]
+
+    # Validate all layers have the same number of keys
+    for name, layer in [("Symbols", syms), ("Nav", nav), ("Numpad", npad)]:
+        if len(layer) != len(base):
+            print(
+                f"Error: layer length mismatch: 'Base' has {len(base)} keys "
+                f"but '{name}' has {len(layer)}",
+                file=sys.stderr,
+            )
+            sys.exit(1)
 
     merged = []
     for i in range(len(base)):
         t = get_tap(base[i])
         left = get_hold(base[i])
-        s = get_tap(syms[i]) if i < len(syms) else ""
-        h = get_tap(nav[i]) if i < len(nav) else ""
-        right = get_tap(npad[i]) if i < len(npad) else ""
+        s = get_tap(syms[i])
+        h = get_tap(nav[i])
+        right = get_tap(npad[i])
 
         key = {}
         if t:
