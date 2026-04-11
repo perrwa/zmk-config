@@ -3,6 +3,8 @@ on:
   push:
     tags:
       - "v*" # only run on tags like v1.0.0
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
