@@ -32,6 +32,10 @@ draw_config:
 
 parse_config:
   zmk_preamble: '#define KEYMAP_DRAWER'
+  layer_legend_map:
+    Symbols: $$more_up$$
+    Nav: $$more_down$$
+    Numpad: $$calculate$$
 
   zmk_keycode_map:
     # Symbols (override defaults for cleaner display)
