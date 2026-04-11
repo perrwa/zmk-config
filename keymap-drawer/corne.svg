@@ -3,6 +3,9 @@
 <svg id="calculate">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M320-240h60v-80h80v-60h-80v-80h-60v80h-80v60h80v80Zm200-30h200v-60H520v60Zm0-100h200v-60H520v60Zm44-152 56-56 56 56 42-42-56-58 56-56-42-42-56 56-56-56-42 42 56 56-56 58 42 42Zm-314-70h200v-60H250v60Zm-50 472q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>
 </svg>
+<svg id="material:123">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M220-360v-192h-60v-48h108v240h-48Zm132 0v-110q0-15 9.5-24.5T386-504h98v-48H352v-48h146q15 0 24.5 9.5T532-566v76q0 15-9.5 24.5T498-456h-98v48h132v48H352Zm248 0v-48h132v-48h-92v-48h92v-48H600v-48h146q15 0 24.5 9.5T780-566v172q0 15-9.5 24.5T746-360H600Z"/></svg>
+</svg>
 <svg id="material:arrow_drop_down">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-360 280-559h400L480-360Z"/></svg>
 </svg>
@@ -853,7 +856,7 @@ path.combo {
 </g>
 <g transform="translate(263, 168) rotate(30.0)" class="key keypos-38">
 <rect rx="6" ry="6" x="-19" y="-30" width="38" height="59" class="key"/>
-<text x="0" y="0" class="key tap">NumLk</text>
+<use href="#material:123" xlink:href="#material:123" x="-7" y="-7" height="14" width="14.0" class="key tap glyph material:123"/>
 </g>
 <g transform="translate(367, 168) rotate(-30.0)" class="key trans keypos-39">
 <rect rx="6" ry="6" x="-19" y="-30" width="38" height="59" class="key trans"/>
