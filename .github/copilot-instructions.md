@@ -4,7 +4,7 @@ Split Corne-Cherry v3.0.1 ZMK keyboard config. Nice!Nano v2 halves + Raytac MDBT
 
 ## Build
 
-No local build/test. Firmware compiles in CI via ZMK's reusable workflow on version tags (`v*`) or manual dispatch. `build.yaml` defines the build matrix. Dongle halves override central role: `cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`.
+No local build/test. Two GitHub Actions workflows: `build.yml` (CI on PRs + manual dispatch) and `release.yml` (tag push `v*` + manual dispatch — builds firmware then creates a draft prerelease). Both call ZMK's reusable workflow. `build.yaml` defines the build matrix. Dongle halves override central role: `cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`.
 
 `make dfu` packages firmware for dongle flashing; `make flash` flashes interactively via serial. Requires `nrfutil nrf5sdk-tools`.
 
