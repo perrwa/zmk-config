@@ -1,0 +1,67 @@
+name: Draw ZMK keymaps (unified)
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "config/*.keymap"
+      - "config/*.dtsi"
+      - "keymap_drawer.config.yaml"
+      - "keymap-drawer/merge_layers.py"
+
+concurrency:
+  group: draw-keymaps-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  draw:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install keymap-drawer
+        run: pipx install keymap-drawer
+
+      - name: Install west
+        run: pipx install west
+
+      - name: Fetch west modules
+        # keymap-drawer bundles ZMK bindings, so we exclude zmk and zephyr
+        # to speed up the fetch — only the dongle module is needed here.
+        run: |
+          west init -l config
+          west config --local manifest.project-filter " -zmk,-zephyr"
+          west update --fetch-opt=--filter=tree:0
+
+      - name: Parse keymap
+        run: >
+          keymap -c keymap_drawer.config.yaml parse -z config/corne.keymap
+          --layer-names Base Symbols Nav Numpad
+          > keymap-drawer/corne.yaml
+
+      - name: Draw standard SVG
+        run: >
+          keymap -c keymap_drawer.config.yaml draw keymap-drawer/corne.yaml
+          > keymap-drawer/corne.svg
+
+      - name: Install merge script dependencies
+        run: pip install pyyaml
+
+      - name: Merge layers into unified view
+        run: >
+          python keymap-drawer/merge_layers.py keymap-drawer/corne.yaml
+          --output-layer perrwa/corne
+          > keymap-drawer/corne-unified.yaml
+
+      - name: Draw unified SVG
+        run: >
+          keymap -c keymap_drawer.config.yaml draw keymap-drawer/corne-unified.yaml
+          > keymap-drawer/corne-unified.svg
+
+      - name: Commit updated images
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          file_pattern: 'keymap-drawer/*.svg keymap-drawer/*.yaml'
+          commit_message: "chore: update keymap-drawer visualizations"

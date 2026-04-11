@@ -1,0 +1,196 @@
+draw_config:
+  key_w: 45
+  key_h: 42
+  split_gap: 30.0
+  key_rx: 6.0
+  key_ry: 6.0
+  inner_pad_w: 2.0
+  inner_pad_h: 2.0
+  outer_pad_w: 30.0
+  outer_pad_h: 56.0
+  line_spacing: 1.2
+  small_pad: 2.0
+  append_colon_to_layer_header: true
+  shrink_wide_legends: 7
+  style_layer_activators: true
+  glyph_tap_size: 14
+  glyph_hold_size: 12
+  glyph_shifted_size: 10
+  svg_extra_style: |-
+    /* Base layer / tap default */
+    .tap        { fill: #1A1F71; font-weight: bold; }
+    .hold       { fill: #FF7F50; }
+    .shifted    { fill: #00CED1; }
+    .right      { fill: #9370DB; }
+    .left       { fill: #FFD700; }
+    .held       { fill: #ffeedd; }
+    /* Per-layer tap colors for standard multi-layer SVG */
+    .layer-Symbols .tap { fill: #00CED1; }
+    .layer-Nav .tap     { fill: #FF7F50; }
+    .layer-Numpad .tap  { fill: #9370DB; }
+    /* Custom glyph colors */
+    .more_down  { fill: #FF7F50 !important; }
+    .more_up    { fill: #00CED1 !important; }
+    .calculate  { fill: #9370DB !important; }
+  glyphs:
+    more_down: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path
+      d="M200-200v-440h80v360h360v80H200Zm200-200v-440h80v360h360v80H400Z"/></svg>
+    more_up: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path
+      d="M680-320v-360H320v-80h440v440h-80ZM480-120v-360H120v-80h440v440h-80Z"/></svg>
+    calculate: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path
+      d="M320-240h60v-80h80v-60h-80v-80h-60v80h-80v60h80v80Zm200-30h200v-60H520v60Zm0-100h200v-60H520v60Zm44-152
+      56-56 56 56 42-42-56-58 56-56-42-42-56 56-56-56-42 42 56 56-56 58 42 42Zm-314-70h200v-60H250v60Zm-50
+      472q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0
+      33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>
+
+parse_config:
+  zmk_preamble: '#define KEYMAP_DRAWER'
+  layer_legend_map:
+    Symbols: $$more_up$$
+    Nav: $$more_down$$
+    Numpad: $$calculate$$
+
+  zmk_keycode_map:
+    # Symbols (override defaults for cleaner display)
+    EXCLAMATION: "!"
+    EXCL: "!"
+    AT_SIGN: "@"
+    AT: "@"
+    HASH: "#"
+    POUND: "#"
+    DOLLAR: $
+    DLLR: $
+    PERCENT: "%"
+    PRCNT: "%"
+    CARET: ^
+    AMPERSAND: "&"
+    AMPS: "&"
+    ASTERISK: "*"
+    ASTRK: "*"
+    STAR: "*"
+    LEFT_PARENTHESIS: (
+    LPAR: (
+    RIGHT_PARENTHESIS: )
+    RPAR: )
+    EQUAL: "="
+    PLUS: +
+    MINUS: "-"
+    UNDERSCORE: _
+    UNDER: _
+    SLASH: /
+    FSLH: /
+    QUESTION: "?"
+    QMARK: "?"
+    BACKSLASH: \
+    BSLH: \
+    PIPE: "|"
+    NON_US_BACKSLASH: \
+    NON_US_BSLH: "|"
+    SEMICOLON: ;
+    SEMI: ;
+    COLON: ":"
+    SINGLE_QUOTE: "'"
+    SQT: "'"
+    APOSTROPHE: "'"
+    APOS: "'"
+    DOUBLE_QUOTES: '"'
+    DQT: '"'
+    COMMA: ","
+    LESS_THAN: <
+    LT: <
+    PERIOD: .
+    DOT: .
+    GREATER_THAN: ">"
+    GT: ">"
+    LEFT_BRACKET: "["
+    LBKT: "["
+    LEFT_BRACE: "{"
+    LBRC: "{"
+    RIGHT_BRACKET: "]"
+    RBKT: "]"
+    RIGHT_BRACE: "}"
+    RBRC: "}"
+    GRAVE: "`"
+    TILDE: "~"
+    NON_US_HASH: "#"
+    NUHS: "#"
+    TILDE2: "~"
+
+    # Special keys → Material glyphs
+    TAB: $$material:keyboard_tab$$
+    BACKSPACE: $$material:keyboard_backspace$$
+    BSPC: $$material:keyboard_backspace$$
+    DELETE: $$material:delete$$
+    DEL: $$material:delete$$
+    ESC: $$material:logout$$
+    SPACE: $$material:space_bar$$
+    ENTER: $$material:keyboard_return$$
+    RET: $$material:keyboard_return$$
+
+    # Modifiers → Material glyphs
+    LEFT_SHIFT: $$material:shift$$
+    LSHFT: $$material:shift$$
+    RIGHT_SHIFT: $$material:shift$$
+    RSHFT: $$material:shift$$
+    LEFT_ALT: $$material:keyboard_option_key$$
+    LALT: $$material:keyboard_option_key$$
+    RIGHT_ALT: $$material:keyboard_option_key$$
+    RALT: $$material:keyboard_option_key$$
+    LEFT_GUI: $$material:keyboard_command_key$$
+    LGUI: $$material:keyboard_command_key$$
+    LEFT_COMMAND: $$material:keyboard_command_key$$
+    LCMD: $$material:keyboard_command_key$$
+    RIGHT_GUI: $$material:keyboard_command_key$$
+    RGUI: $$material:keyboard_command_key$$
+    RIGHT_COMMAND: $$material:keyboard_command_key$$
+    RCMD: $$material:keyboard_command_key$$
+    LEFT_CONTROL: $$material:keyboard_control_key$$
+    LCTRL: $$material:keyboard_control_key$$
+    RIGHT_CONTROL: $$material:keyboard_control_key$$
+    RCTRL: $$material:keyboard_control_key$$
+
+    # Arrow keys
+    LEFT: $$material:arrow_left$$
+    RIGHT: $$material:arrow_right$$
+    UP: $$material:arrow_drop_up$$
+    DOWN: $$material:arrow_drop_down$$
+
+    # Navigation
+    HOME: $$material:keyboard_double_arrow_left$$
+    END: $$material:keyboard_double_arrow_right$$
+    PAGE_UP: $$material:keyboard_double_arrow_up$$
+    PAGE_DOWN: $$material:keyboard_double_arrow_down$$
+
+    # Media
+    C_MUTE: $$material:no_sound$$
+    C_VOLUME_DOWN: $$material:volume_down$$
+    C_VOL_DN: $$material:volume_down$$
+    C_VOLUME_UP: $$material:volume_up$$
+    C_VOL_UP: $$material:volume_up$$
+    C_REWIND: $$material:skip_previous$$
+    C_PLAY_PAUSE: $$material:play_pause$$
+    C_PP: $$material:play_pause$$
+    C_FAST_FORWARD: $$material:skip_next$$
+
+    # Numpad (display as plain digits/symbols)
+    KP_N0: "0"
+    KP_N1: "1"
+    KP_N2: "2"
+    KP_N3: "3"
+    KP_N4: "4"
+    KP_N5: "5"
+    KP_N6: "6"
+    KP_N7: "7"
+    KP_N8: "8"
+    KP_N9: "9"
+    KP_PLUS: +
+    KP_MINUS: "-"
+    KP_ASTERISK: "*"
+    KP_SLASH: /
+    KP_DOT: .
+    KP_NUM: $$material:123$$
+
+  raw_binding_map:
+    "&ext_power EP_OFF": $$material:power_off$$
+    "&kp LS(LG(LBKT))": $$material:switch_left$$
+    "&kp LS(LG(RBKT))": $$material:switch_right$$
