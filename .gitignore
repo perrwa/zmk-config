@@ -12,5 +12,11 @@
 # VSCode settings folder
 .vscode/
 
+# Build artifacts
 firmware/
 *.pem
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
