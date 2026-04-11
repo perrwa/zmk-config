@@ -219,12 +219,18 @@ path.combo {
 }
 /* End Tabler Icons Cleanup */
 
+/* Base layer / tap default */
 .tap        { fill: #1A1F71; font-weight: bold; }
 .hold       { fill: #FF7F50; }
 .shifted    { fill: #00CED1; }
 .right      { fill: #9370DB; }
 .left       { fill: #FFD700; }
 .held       { fill: #ffeedd; }
+/* Per-layer tap colors for standard multi-layer SVG */
+.layer-Symbols .tap { fill: #00CED1; }
+.layer-Nav .tap     { fill: #FF7F50; }
+.layer-Numpad .tap  { fill: #9370DB; }
+/* Custom glyph colors */
 .more_down  { fill: #FF7F50 !important; }
 .more_up    { fill: #00CED1 !important; }
 .calculate  { fill: #9370DB !important; }</style>
