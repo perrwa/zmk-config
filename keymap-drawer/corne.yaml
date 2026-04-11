@@ -1,7 +1,7 @@
 layout: {zmk_keyboard: corne}
 layers:
-  layer0:
-  - TAB
+  Base:
+  - $$material:keyboard_tab$$
   - Q
   - W
   - E
@@ -12,8 +12,8 @@ layers:
   - I
   - O
   - P
-  - BSPC
-  - {t: ESC, h: layer2}
+  - $$material:keyboard_backspace$$
+  - {t: '$$material:logout$$', h: Nav}
   - A
   - S
   - D
@@ -25,7 +25,7 @@ layers:
   - L
   - ;
   - ''''
-  - LSHFT
+  - $$material:shift$$
   - Z
   - X
   - C
@@ -36,14 +36,14 @@ layers:
   - ','
   - .
   - /
-  - {t: RET, h: RSHFT}
-  - {t: (, h: LALT}
-  - {t: SPACE, h: layer1}
-  - {t: RET, h: LCMD}
-  - {t: RET, h: RCMD}
-  - {t: SPACE, h: layer1}
-  - {t: ), h: RCTRL}
-  layer1:
+  - {t: '$$material:keyboard_return$$', h: '$$material:shift$$'}
+  - {t: (, h: '$$material:keyboard_option_key$$'}
+  - {t: '$$material:space_bar$$', h: Symbols}
+  - {t: '$$material:keyboard_return$$', h: '$$material:keyboard_command_key$$'}
+  - {t: '$$material:keyboard_return$$', h: '$$material:keyboard_command_key$$'}
+  - {t: '$$material:space_bar$$', h: Symbols}
+  - {t: ), h: '$$material:keyboard_control_key$$'}
+  Symbols:
   - '`'
   - '1'
   - '2'
@@ -56,11 +56,11 @@ layers:
   - '9'
   - '0'
   - \
-  - layer3
+  - Numpad
   - ''
   - ''
-  - Sft+Gui+[
-  - Sft+Gui+]
+  - $$material:switch_left$$
+  - $$material:switch_right$$
   - '['
   - ']'
   - '-'
@@ -86,62 +86,62 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  layer2:
+  Nav:
   - ''
   - ''
-  - MUTE
-  - VOLUME DOWN
-  - VOLUME UP
+  - $$material:no_sound$$
+  - $$material:volume_down$$
+  - $$material:volume_up$$
   - ''
-  - HOME
-  - PAGE DOWN
-  - PAGE UP
-  - END
+  - $$material:keyboard_double_arrow_left$$
+  - $$material:keyboard_double_arrow_down$$
+  - $$material:keyboard_double_arrow_up$$
+  - $$material:keyboard_double_arrow_right$$
   - ''
-  - DELETE
+  - $$material:delete$$
   - {type: held}
   - ''
-  - REWIND
-  - PLAY PAUSE
-  - FAST FORWARD
+  - $$material:skip_previous$$
+  - $$material:play_pause$$
+  - $$material:skip_next$$
   - ''
-  - LEFT
-  - DOWN
-  - UP
-  - RIGHT
+  - $$material:arrow_left$$
+  - $$material:arrow_drop_down$$
+  - $$material:arrow_drop_up$$
+  - $$material:arrow_right$$
   - ''
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - ''
-  - {t: ▽, type: trans}
-  - layer3
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
+  - ''
   - {t: ▽, type: trans}
-  layer3:
+  - Numpad
+  - {t: ▽, type: trans}
+  - {t: ▽, type: trans}
+  - ''
+  - {t: ▽, type: trans}
+  Numpad:
   - ''
   - ''
   - ''
   - ''
   - ''
-  - EP OFF
+  - $$material:power_off$$
   - ''
-  - KP 7
-  - KP 8
-  - KP 9
-  - KP PLUS
-  - KP ASTERISK
+  - '7'
+  - '8'
+  - '9'
+  - +
+  - '*'
   - {type: held}
   - ''
   - ''
@@ -149,11 +149,11 @@ layers:
   - ''
   - ''
   - ''
-  - KP 4
-  - KP 5
-  - KP 6
-  - KP MINUS
-  - KP SLASH
+  - '4'
+  - '5'
+  - '6'
+  - '-'
+  - /
   - ''
   - ''
   - ''
@@ -161,14 +161,14 @@ layers:
   - ''
   - ''
   - ''
-  - KP 1
-  - KP 2
-  - KP 3
+  - '1'
+  - '2'
+  - '3'
   - ''
   - ''
   - {t: ▽, type: trans}
   - {type: held}
-  - KP NUM
+  - NumLk
   - {t: ▽, type: trans}
-  - KP 0
-  - KP DOT
+  - '0'
+  - .
