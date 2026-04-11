@@ -15,7 +15,7 @@ This configuration is designed for:
 ```
 ├── boards/
 │   └── shields/
-│       └── corne/
+│       └── corne_dongle/
 │           ├── corne_dongle.conf
 │           ├── corne_dongle.overlay
 │           └── Kconfig.shield
@@ -51,7 +51,7 @@ Both setups include a `settings_reset` firmware for their respective boards.
 
 ## Files Overview
 
-- `boards/shields/corne/` — Raytac dongle-specific shield and overlay files
+- `boards/shields/corne_dongle/` — Raytac dongle-specific shield and overlay files
 - `config/` — Main Corne configuration and keymap files
 - `keymap-drawer/` — keymap-drawer artifacts and configs
 - `build.yaml` — GitHub Actions build matrix
