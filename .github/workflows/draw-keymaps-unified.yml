@@ -52,4 +52,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: 'keymap-drawer/*.svg keymap-drawer/*.yaml'
-          commit_message: "[Draw] ${{ github.event.head_commit.message || 'Manual keymap update' }}"
+          commit_message: "chore: update keymap-drawer visualizations"
