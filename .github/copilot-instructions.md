@@ -14,7 +14,7 @@ No local build/test. Firmware compiles in CI via ZMK's reusable workflow on vers
 
 Each layer has QMK-style comment blocks above `bindings` showing visual layout — keep in sync when editing.
 
-`keymap-drawer/corne.yaml` is a **separate** visualization definition, not auto-generated — update manually with keymap changes.
+`keymap-drawer/corne.yaml` is a **separate** visualization definition. It is auto-updated by the `draw-keymaps.yml` workflow (which parses `config/corne.keymap` with `-b` to preserve manual tweaks), but can also be edited manually. Styling config lives at `keymap_drawer.config.yaml` (repo root).
 
 ## Dongle BLE
 

@@ -16,7 +16,8 @@ This configuration is designed for:
 ├── .github/
 │   ├── copilot-instructions.md
 │   └── workflows/
-│       └── build.yml
+│       ├── build.yml
+│       └── draw-keymaps.yml
 ├── boards/
 │   └── shields/
 │       └── corne_dongle/
@@ -28,19 +29,19 @@ This configuration is designed for:
 │   ├── corne.keymap
 │   └── west.yml
 ├── keymap-drawer/
-│   ├── config.yaml
 │   ├── corne.png
 │   ├── corne.svg
 │   └── corne.yaml
 ├── zephyr/
 │   └── module.yml
 ├── build.yaml
+├── keymap_drawer.config.yaml
 ├── Makefile
 ```
 
 ## Keymap Visualization
 
-Keymap images are generated using [keymap-drawer](https://github.com/caksoylar/keymap-drawer) by [caksoylar](https://github.com/caksoylar).
+Keymap images are automatically generated using [keymap-drawer](https://github.com/caksoylar/keymap-drawer) by [caksoylar](https://github.com/caksoylar). The `draw-keymaps.yml` workflow runs on pushes to keymap/config files and commits updated SVGs and YAML parse output to `keymap-drawer/`.
 
 ![Corne Keymap PNG](keymap-drawer/corne.png)
 
@@ -59,7 +60,8 @@ Firmware builds on version tags (`v*`) or manual workflow dispatch.
 
 - `boards/shields/corne_dongle/` — Raytac dongle-specific shield, overlay, and Kconfig
 - `config/` — Main Corne configuration (`corne.conf`) and keymap (`corne.keymap`)
-- `keymap-drawer/` — [keymap-drawer](https://github.com/caksoylar/keymap-drawer) config and generated visualizations
+- `keymap-drawer/` — [keymap-drawer](https://github.com/caksoylar/keymap-drawer) generated visualizations (SVG, YAML, PNG)
+- `keymap_drawer.config.yaml` — keymap-drawer styling and parse configuration
 - `zephyr/module.yml` — Registers this repo as a Zephyr module (sets `board_root`)
 - `build.yaml` — GitHub Actions build matrix
 - `Makefile` — DFU packaging and serial flashing for the Raytac dongle (requires `nrfutil`)
