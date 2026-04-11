@@ -46,7 +46,7 @@ This configuration is designed for:
 
 Keymap images are automatically generated using [keymap-drawer](https://github.com/caksoylar/keymap-drawer) by [caksoylar](https://github.com/caksoylar). The `draw-keymaps-unified.yml` workflow runs on pushes to keymap/config files and commits updated SVGs and YAML parse output to `keymap-drawer/`.
 
-![Corne Keymap PNG](keymap-drawer/corne.png)
+![Corne Keymap](keymap-drawer/corne-unified.svg)
 
 
 ## Build Configurations
