@@ -1,82 +1,77 @@
 # ZMK Config
 
-This repository contains configuration files for the **Corne-Cherry v3.0.1** keyboard using [ZMK Firmware](https://zmk.dev/). It includes keymaps, overlays, and shield definitions, as well as visual representations of the keymap.
+[ZMK Firmware](https://zmk.dev/) configuration for a split **Corne-Cherry v3.0.1** keyboard with a BLE dongle acting as the central receiver.
 
-## Hardware and Wireless Module
+## Hardware
 
-This configuration is designed for:
+- **Corne-Cherry v3.0.1** — split 3×6+3 keyboard ([foostan/crkbd](https://github.com/foostan/crkbd))
+- **Nice!Nano v2** — controllers for each half (BLE peripherals)
+- **Raytac MDBT50Q-RX** — USB dongle running as BLE central ([rschenk/zmk-component-raytac-dongle](https://github.com/rschenk/zmk-component-raytac-dongle))
 
-- **Corne-Cherry v3.0.1**
-- **Raytac nRF52840** module (e.g., [MDBT50Q-RX](https://www.raytac.com/product/ins.php?index_id=89))
-- **Nice!Nano v2** controllers
+## Keymap
+
+Four layers with mod-tap (`&mt`) and layer-tap (`&lt`) thumb keys:
+
+| Layer | Name | Description |
+|-------|------|-------------|
+| 0 | QWERTY | Base alpha layer |
+| 1 | Symbols | Numbers, brackets, F1–F10 (hold Space) |
+| 2 | Nav | Arrows, Home/End/PgUp/PgDn, media controls (hold Esc) |
+| 3 | Numpad | Numeric keypad and operators (toggled from L1 or L2) |
+
+![Corne Keymap](keymap-drawer/corne-unified.svg)
+
+## Build & Firmware
+
+All builds run in GitHub Actions — no local toolchain needed.
+
+| Workflow | Trigger | What it does |
+|----------|---------|--------------|
+| `build.yml` | PRs, manual dispatch | CI build for all targets |
+| `release.yml` | Tag push `v*`, manual dispatch | Builds firmware → draft prerelease |
+| `draw-keymaps-unified.yml` | Keymap/config changes | Regenerates keymap SVGs and YAML |
+
+The build matrix (`build.yaml`) produces firmware for:
+
+- **Dongle** — `corne_dongle` shield on `raytac_mdbt50q_rx`
+- **Left/Right halves** — `corne_left`/`corne_right` on `nice_nano_v2` with `-DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`
+- **Settings reset** — for both boards
+
+### Dongle flashing
+
+The `Makefile` handles DFU packaging and serial flashing for the Raytac dongle (requires `nrfutil nrf5sdk-tools`):
+
+```
+make dfu      # Package .bin/.hex → .zip DFU bundles
+make flash    # Interactive serial port + package selection
+make clean    # Remove generated .zip packages
+```
 
 ## Repository Structure
 
 ```
-├── .github/
-│   ├── copilot-instructions.md
-│   └── workflows/
-│       ├── build.yml
-│       └── draw-keymaps-unified.yml
-├── boards/
-│   └── shields/
-│       └── corne_dongle/
-│           ├── Kconfig.shield
-│           ├── corne_dongle.conf
-│           └── corne_dongle.overlay
+├── boards/shields/corne_dongle/   # Dongle shield: overlay, conf, Kconfig
 ├── config/
-│   ├── corne.conf
-│   ├── corne.keymap
-│   └── west.yml
-├── keymap-drawer/
-│   ├── corne.png
-│   ├── corne.svg
-│   ├── corne.yaml
-│   ├── corne-unified.svg
-│   ├── corne-unified.yaml
-│   └── merge_layers.py
-├── zephyr/
-│   └── module.yml
-├── build.yaml
-├── keymap_drawer.config.yaml
-├── Makefile
+│   ├── corne.conf                 # Keyboard settings (sleep, battery, BLE)
+│   ├── corne.keymap               # Keymap (Devicetree syntax)
+│   └── west.yml                   # West manifest — ZMK v0.3 + Raytac dongle module
+├── keymap-drawer/                 # Auto-generated keymap visualizations
+│   ├── corne.svg / corne.yaml     # Per-layer output
+│   ├── corne-unified.svg / .yaml  # All layers merged into one view
+│   └── merge_layers.py            # Script that produces the unified view
+├── zephyr/module.yml              # Registers repo as a Zephyr module
+├── build.yaml                     # GitHub Actions build matrix
+├── keymap_drawer.config.yaml      # keymap-drawer styling config
+└── Makefile                       # DFU packaging and dongle flashing
 ```
-
-## Keymap Visualization
-
-Keymap images are automatically generated using [keymap-drawer](https://github.com/caksoylar/keymap-drawer) by [caksoylar](https://github.com/caksoylar). The `draw-keymaps-unified.yml` workflow runs on pushes to keymap/config files and commits updated SVGs and YAML parse output to `keymap-drawer/`.
-
-![Corne Keymap](keymap-drawer/corne-unified.svg)
-
-
-## Build Configurations
-
-The `build.yaml` defines a **dongle setup** for GitHub Actions CI:
-
-- **Raytac MDBT50Q-RX dongle** acts as the BLE central (`corne_dongle` shield)
-- **Nice!Nano v2 halves** are both peripherals (overridden via `-DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`)
-- **`settings_reset`** firmware is included for both boards
-
-Firmware builds on version tags (`v*`) or manual workflow dispatch.
-
-## Files Overview
-
-- `boards/shields/corne_dongle/` — Raytac dongle-specific shield, overlay, and Kconfig
-- `config/` — Main Corne configuration (`corne.conf`) and keymap (`corne.keymap`)
-- `keymap-drawer/` — [keymap-drawer](https://github.com/caksoylar/keymap-drawer) generated visualizations (SVG, YAML) and merge script
-- `keymap-drawer/merge_layers.py` — Merges 4-layer parsed YAML into a single unified layer visualization
-- `keymap_drawer.config.yaml` — keymap-drawer styling and parse configuration
-- `zephyr/module.yml` — Registers this repo as a Zephyr module (sets `board_root`)
-- `build.yaml` — GitHub Actions build matrix
-- `Makefile` — DFU packaging and serial flashing for the Raytac dongle (requires `nrfutil`)
 
 ## Resources
 
 - [ZMK Documentation](https://zmk.dev/docs/)
-- [Corne Keyboard Info](https://github.com/foostan/crkbd)
-- [Raytac Dongle ZMK Component (by rschenk)](https://github.com/rschenk/zmk-component-raytac-dongle)
-- [keymap-drawer (by caksoylar)](https://github.com/caksoylar/keymap-drawer)
+- [Corne Keyboard (foostan/crkbd)](https://github.com/foostan/crkbd)
+- [Raytac Dongle ZMK Component (rschenk)](https://github.com/rschenk/zmk-component-raytac-dongle)
+- [keymap-drawer (caksoylar)](https://github.com/caksoylar/keymap-drawer)
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+MIT — see [LICENSE](LICENSE).
