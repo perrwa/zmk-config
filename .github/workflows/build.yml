@@ -2,12 +2,6 @@ name: Build ZMK firmware
 on:
   pull_request:
     branches: [main]
-    paths-ignore:
-      - "keymap-drawer/**"
-      - "keymap_drawer.config.yaml"
-      - ".github/workflows/draw.yml"
-      - "README.md"
-      - "LICENSE"
   workflow_dispatch:
 
 concurrency:
@@ -15,7 +9,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  check-changes:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      firmware: ${{ steps.filter.outputs.firmware }}
+    steps:
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            firmware:
+              - 'config/**'
+              - 'boards/**'
+              - 'build.yaml'
+              - 'zephyr/**'
+              - '.github/workflows/build.yml'
+
   build:
+    needs: check-changes
+    if: always() && (needs.check-changes.outputs.firmware == 'true' || needs.check-changes.result == 'skipped')
     permissions:
       contents: read
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3
