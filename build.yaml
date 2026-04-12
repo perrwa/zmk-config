@@ -8,12 +8,6 @@ include:
   - board: mdbt50q_cx_40
     shield: settings_reset
 
-  # Diagnostic: test if RX also overflows RAM on Zephyr 4.1
-  - board: mdbt50q_rx
-    shield: corne_dongle
-  - board: mdbt50q_rx
-    shield: settings_reset
-
   # Dongle setup: both halves are peripherals (dongle is central)
   - board: nice_nano//zmk
     shield: corne_left
