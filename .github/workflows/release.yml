@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Existing tag to release (e.g., v1.0.0)"
+        description: "Existing tag to release (e.g., v25.08.1)"
         required: true
         type: string
 
@@ -23,13 +23,27 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Checkout (for tag listing)
+        uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+          fetch-depth: 0
+
       - name: Determine release tag
         id: tag
+        # Tag convention: vYY.MM.N (e.g., v25.08.1, v25.08.2)
         run: |
           if [ -n "$TAG" ]; then
             echo "name=$TAG" >> "$GITHUB_OUTPUT"
           else
-            echo "name=build-$(date +%y%m%d)-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+            PREFIX="v$(date +%y.%m)"
+            LAST=$(git tag -l "${PREFIX}.*" --sort=-v:refname | head -n1)
+            if [ -n "$LAST" ]; then
+              N=$(( ${LAST##*.} + 1 ))
+            else
+              N=1
+            fi
+            echo "name=${PREFIX}.${N}" >> "$GITHUB_OUTPUT"
           fi
         env:
           TAG: ${{ inputs.tag }}
