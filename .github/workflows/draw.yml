@@ -1,7 +1,8 @@
-name: Draw ZMK keymaps (unified)
+name: Draw ZMK keymaps
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - "config/*.keymap"
       - "config/*.dtsi"
@@ -9,7 +10,7 @@ on:
       - "keymap-drawer/merge_layers.py"
 
 concurrency:
-  group: draw-keymaps-${{ github.ref }}
+  group: draw
   cancel-in-progress: true
 
 jobs:

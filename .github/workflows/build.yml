@@ -2,7 +2,14 @@ name: Build ZMK firmware
 on:
   pull_request:
     branches: [main]
+    paths-ignore:
+      - "keymap-drawer/**"
+      - "keymap_drawer.config.yaml"
   workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
