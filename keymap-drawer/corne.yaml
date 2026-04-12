@@ -13,7 +13,7 @@ layers:
   - O
   - P
   - $$material:keyboard_backspace$$
-  - {t: '$$material:logout$$', h: $$more_down$$}
+  - {t: '$$material:logout$$', h: '$$material:more_down$$'}
   - A
   - S
   - D
@@ -38,10 +38,10 @@ layers:
   - /
   - {t: '$$material:keyboard_return$$', h: '$$material:shift$$'}
   - {t: (, h: '$$material:keyboard_option_key$$'}
-  - {t: '$$material:space_bar$$', h: $$more_up$$}
+  - {t: '$$material:space_bar$$', h: '$$material:more_up$$'}
   - {t: '$$material:keyboard_return$$', h: '$$material:keyboard_command_key$$'}
   - {t: '$$material:keyboard_return$$', h: '$$material:keyboard_command_key$$'}
-  - {t: '$$material:space_bar$$', h: $$more_up$$}
+  - {t: '$$material:space_bar$$', h: '$$material:more_up$$'}
   - {t: ), h: '$$material:keyboard_control_key$$'}
   Symbols:
   - '`'
@@ -56,7 +56,7 @@ layers:
   - '9'
   - '0'
   - \
-  - $$calculate$$
+  - $$material:calculate$$
   - ''
   - ''
   - $$material:switch_left$$
@@ -124,7 +124,7 @@ layers:
   - ''
   - ''
   - {t: ▽, type: trans}
-  - $$calculate$$
+  - $$material:calculate$$
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - ''
