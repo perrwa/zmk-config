@@ -5,6 +5,9 @@ on:
     paths-ignore:
       - "keymap-drawer/**"
       - "keymap_drawer.config.yaml"
+      - ".github/workflows/draw.yml"
+      - "README.md"
+      - "LICENSE"
   workflow_dispatch:
 
 concurrency:
