@@ -3,9 +3,9 @@ include:
   - board: nice_nano//zmk
     shield: settings_reset
 
-  - board: mdbt50q_cx_40
+  - board: raytac_mdbt50q_cx_40_dongle//zmk
     shield: corne_dongle
-  - board: mdbt50q_cx_40
+  - board: raytac_mdbt50q_cx_40_dongle//zmk
     shield: settings_reset
 
   # Dongle setup: both halves are peripherals (dongle is central)

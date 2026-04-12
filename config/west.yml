@@ -11,6 +11,6 @@ manifest:
       import: app/west.yml
     - name: zmk-component-raytac-dongle
       remote: perrwa
-      revision: main
+      revision: perrwa/fix-ram-overflow
   self:
     path: config
