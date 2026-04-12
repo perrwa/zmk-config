@@ -1,10 +1,10 @@
 # Copilot Instructions
 
-Split Corne-Cherry v3.0.1 ZMK keyboard config. Nice!Nano v2 halves + Raytac MDBT50Q-RX dongle (BLE central). West manifest pins ZMK v0.3 + `rschenk/zmk-component-raytac-dongle`.
+Split Corne-Cherry v3.0.1 ZMK keyboard config. Nice!Nano v2 halves + Raytac MDBT50Q-CX-40 dongle (BLE central). West manifest tracks ZMK main (v0.4) + `perrwa/zmk-component-raytac-dongle`.
 
 ## Build
 
-No local build/test. Two GitHub Actions workflows: `build.yml` (CI on PRs + manual dispatch) and `release.yml` (tag push `v*` + manual dispatch — builds firmware then creates a draft prerelease). Both call ZMK's reusable workflow. `build.yaml` defines the build matrix. Dongle halves override central role: `cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`.
+No local build/test. Two GitHub Actions workflows: `build.yml` (CI on PRs + manual dispatch) and `release.yml` (push to `main` + manual dispatch — builds firmware then creates a draft prerelease). Both call ZMK's reusable workflow. `build.yaml` defines the build matrix. Dongle halves override central role: `cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`.
 
 `make dfu` packages firmware for dongle flashing; `make flash` flashes interactively via serial. Requires `nrfutil nrf5sdk-tools`.
 
