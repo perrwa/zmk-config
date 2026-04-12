@@ -1,8 +1,7 @@
 name: Release ZMK firmware
 on:
   push:
-    tags:
-      - "v*"
+    branches: [main]
   workflow_dispatch:
     inputs:
       tag:
@@ -10,11 +9,10 @@ on:
         required: true
         type: string
 
-permissions:
-  contents: write
-
 jobs:
   build:
+    permissions:
+      contents: read
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3
     with:
       fallback_binary: hex
@@ -22,7 +20,20 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
+      - name: Determine release tag
+        id: tag
+        run: |
+          if [ -n "$TAG" ]; then
+            echo "name=$TAG" >> "$GITHUB_OUTPUT"
+          else
+            echo "name=build-$(date +%y%m%d)-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          TAG: ${{ inputs.tag }}
+
       - name: Download firmware artifact
         uses: actions/download-artifact@v4
         with:
@@ -32,8 +43,8 @@ jobs:
       - name: Create GitHub Release (draft prerelease with notes)
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ inputs.tag || github.ref_name }}
-          name: ${{ inputs.tag || github.ref_name }}
+          tag_name: ${{ steps.tag.outputs.name }}
+          name: ${{ steps.tag.outputs.name }}
           files: ./release/*
           draft: true
           prerelease: true
