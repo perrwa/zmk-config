@@ -71,6 +71,7 @@ jobs:
           commit_message: "chore: update keymap-drawer visualizations"
           branch: chore/update-keymap-drawings
           create_branch: true
+          push_options: '--force-with-lease'
 
       - name: Create or update pull request
         if: steps.auto-commit-pr.outputs.changes_detected == 'true'
