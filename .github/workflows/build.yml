@@ -48,8 +48,8 @@ jobs:
     permissions: {}
     steps:
       - run: |
-          if [ "${{ needs.build.result }}" = "failure" ]; then
-            echo "Build failed"
+          if [ "${{ needs.build.result }}" = "failure" ] || [ "${{ needs.build.result }}" = "cancelled" ]; then
+            echo "Build did not succeed (result: ${{ needs.build.result }})"
             exit 1
           fi
           echo "Build OK (result: ${{ needs.build.result }})"
