@@ -23,32 +23,22 @@ draw_config:
     .shifted    { fill: #00CED1; }
     .right      { fill: #9370DB; }
     .left       { fill: #FFD700; }
-    .held       { fill: #ffeedd; }
+    rect.held, rect.combo.held { fill: #ddffdd; }
     /* Per-layer tap colors for standard multi-layer SVG */
     .layer-Symbols .tap { fill: #00CED1; }
     .layer-Nav .tap     { fill: #FF7F50; }
     .layer-Numpad .tap  { fill: #9370DB; }
-    /* Custom glyph colors */
-    .more_down  { fill: #FF7F50 !important; }
-    .more_up    { fill: #00CED1 !important; }
-    .calculate  { fill: #9370DB !important; }
-  glyphs:
-    more_down: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path
-      d="M200-200v-440h80v360h360v80H200Zm200-200v-440h80v360h360v80H400Z"/></svg>
-    more_up: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path
-      d="M680-320v-360H320v-80h440v440h-80ZM480-120v-360H120v-80h440v440h-80Z"/></svg>
-    calculate: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path
-      d="M320-240h60v-80h80v-60h-80v-80h-60v80h-80v60h80v80Zm200-30h200v-60H520v60Zm0-100h200v-60H520v60Zm44-152
-      56-56 56 56 42-42-56-58 56-56-42-42-56 56-56-56-42 42 56 56-56 58 42 42Zm-314-70h200v-60H250v60Zm-50
-      472q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0
-      33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>
+    /* Material glyph colors for layer legends */
+    .material-more_down  { fill: #FF7F50 !important; }
+    .material-more_up    { fill: #00CED1 !important; }
+    .material-calculate  { fill: #9370DB !important; }
 
 parse_config:
   zmk_preamble: '#define KEYMAP_DRAWER'
   layer_legend_map:
-    Symbols: $$more_up$$
-    Nav: $$more_down$$
-    Numpad: $$calculate$$
+    Symbols: $$material:more_up$$
+    Nav: $$material:more_down$$
+    Numpad: $$material:calculate$$
 
   zmk_keycode_map:
     # Symbols (override defaults for cleaner display)
@@ -188,7 +178,7 @@ parse_config:
     KP_ASTERISK: "*"
     KP_SLASH: /
     KP_DOT: .
-    KP_NUM: $$material:123$$
+    KP_NUM: $$material:pin$$
 
   raw_binding_map:
     "&ext_power EP_OFF": $$material:power_off$$
