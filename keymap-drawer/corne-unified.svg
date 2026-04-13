@@ -225,7 +225,7 @@ path.combo {
 .shifted    { fill: #00CED1; }
 .right      { fill: #9370DB; }
 .left       { fill: #FFD700; }
-.held       { fill: #ddffdd; }
+rect.held, rect.combo.held { fill: #ddffdd; }
 /* Per-layer tap colors for standard multi-layer SVG */
 .layer-Symbols .tap { fill: #00CED1; }
 .layer-Nav .tap     { fill: #FF7F50; }
