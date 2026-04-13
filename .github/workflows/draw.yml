@@ -8,9 +8,16 @@ on:
       - "config/*.dtsi"
       - "keymap_drawer.config.yaml"
       - "keymap-drawer/merge_layers.py"
+  pull_request:
+    branches: [main]
+    paths:
+      - "config/*.keymap"
+      - "config/*.dtsi"
+      - "keymap_drawer.config.yaml"
+      - "keymap-drawer/merge_layers.py"
 
 concurrency:
-  group: draw
+  group: draw-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -23,6 +30,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
 
       - name: Install keymap-drawer
         run: pipx install keymap-drawer
