@@ -85,7 +85,10 @@ jobs:
             keymap-drawer/*.yaml
 
       - name: Commit updated images
-        if: github.ref != 'refs/heads/main'
+        if: >-
+          github.ref != 'refs/heads/main'
+          && (github.event_name != 'pull_request'
+              || github.event.pull_request.head.repo.full_name == github.repository)
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: 'keymap-drawer/*.svg keymap-drawer/*.yaml'
