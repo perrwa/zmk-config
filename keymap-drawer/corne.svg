@@ -1,8 +1,5 @@
 <svg width="690" height="1104" viewBox="0 0 690 1104" class="keymap" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <defs>/* start glyphs */
-<svg id="material:123">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M220-360v-192h-60v-48h108v240h-48Zm132 0v-110q0-15 9.5-24.5T386-504h98v-48H352v-48h146q15 0 24.5 9.5T532-566v76q0 15-9.5 24.5T498-456h-98v48h132v48H352Zm248 0v-48h132v-48h-92v-48h92v-48H600v-48h146q15 0 24.5 9.5T780-566v172q0 15-9.5 24.5T746-360H600Z"/></svg>
-</svg>
 <svg id="material:arrow_drop_down">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-360 280-559h400L480-360Z"/></svg>
 </svg>
@@ -62,6 +59,9 @@
 </svg>
 <svg id="material:no_sound">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="m611-323-43-43 114-113-114-113 43-43 113 114 113-114 43 43-114 113 114 113-43 43-113-114-113 114Zm-491-37v-240h160l200-200v640L280-360H120Zm300-288L307-540H180v120h127l113 109v-337ZM311-481Z"/></svg>
+</svg>
+<svg id="material:pin">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M140-160q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H140Zm107-194h42v-252h-32l-73 49 21 33 42-28v198Zm133 0h163v-38H434v-2q14-12 30.5-26.5T494-448q21-20 33-38.5t12-44.5q0-32-22-53.5T460-606q-30 0-50.5 14T379-555l38 18q5-11 17-19t26-8q18 0 28 10t10 24q0 20-10 33.5T461-468q-23 21-40.5 37T380-393v39Zm314 0q36 0 59.5-17.5T777-426q0-25-13-41t-34-18v-1q19-6 28.5-19.5T768-541q0-30-21.5-47.5T693-606q-22 0-42 12t-33 35l34 18q8-11 18.5-17.5T693-565q15 0 24.5 8.5T727-533q0 17-11.5 23t-30.5 6h-14v39h15q19 0 34.5 10t15.5 29q0 18-11.5 27.5T694-389q-15 0-29-10t-20-27l-35 13q8 27 28.5 43t55.5 16ZM140-220h680v-520H140v520Zm0 0v-520 520Z"/></svg>
 </svg>
 <svg id="material:play_pause">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M200-332v-296l220 148-220 148Zm340 12v-320h60v320h-60Zm160 0v-320h60v320h-60Z"/></svg>
@@ -869,7 +869,7 @@ path.combo {
 </g>
 <g transform="translate(263, 168) rotate(30.0)" class="key keypos-38">
 <rect rx="6" ry="6" x="-19" y="-30" width="38" height="59" class="key"/>
-<use href="#material:123" xlink:href="#material:123" x="-7" y="-7" height="14" width="14.0" class="key tap glyph material:123"/>
+<use href="#material:pin" xlink:href="#material:pin" x="-7" y="-7" height="14" width="14.0" class="key tap glyph material:pin"/>
 </g>
 <g transform="translate(367, 168) rotate(-30.0)" class="key trans keypos-39">
 <rect rx="6" ry="6" x="-19" y="-30" width="38" height="59" class="key trans"/>

@@ -168,7 +168,7 @@ layers:
   - ''
   - {t: ▽, type: trans}
   - {type: held}
-  - $$material:123$$
+  - $$material:pin$$
   - {t: ▽, type: trans}
   - '0'
   - .
