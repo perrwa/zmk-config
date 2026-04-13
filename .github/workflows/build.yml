@@ -12,6 +12,7 @@ jobs:
   check-changes:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
       pull-requests: read
     outputs:
@@ -43,6 +44,7 @@ jobs:
     if: always()
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions: {}
     steps:
       - run: |
