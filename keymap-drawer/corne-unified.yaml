@@ -40,7 +40,7 @@ layers:
   - {t: (, s: ▽, h: ▽, left: '$$material:keyboard_option_key$$', right: ▽}
   - {t: '$$material:space_bar$$', h: '$$material:calculate$$', left: '$$material:more_up$$'}
   - {t: '$$material:keyboard_return$$', s: ▽, h: ▽, left: '$$material:keyboard_command_key$$',
-    right: '$$material:123$$'}
+    right: '$$material:pin$$'}
   - {t: '$$material:keyboard_return$$', s: ▽, h: ▽, left: '$$material:keyboard_command_key$$',
     right: ▽}
   - {t: '$$material:space_bar$$', s: ▽, left: '$$material:more_up$$', right: '0'}
