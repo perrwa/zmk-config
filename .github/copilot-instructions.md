@@ -4,9 +4,21 @@ Split Corne-Cherry v3.0.1 ZMK keyboard config. Nice!Nano v2 halves + Raytac MDBT
 
 ## Build
 
-No local build/test. Two GitHub Actions workflows: `build.yml` (CI on PRs + manual dispatch) and `release.yml` (tag push `v*` + manual dispatch — builds firmware then creates a draft prerelease). Both call ZMK's reusable workflow. `build.yaml` defines the build matrix. Dongle halves override central role: `cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`.
+No local build/test. Three GitHub Actions workflows:
+
+- `build.yml` — CI on PRs to main + manual dispatch. Has a `check-changes` gate using `dorny/paths-filter` so the build job only runs when firmware-relevant files change (`config/`, `boards/`, `build.yaml`, `zephyr/`, `build.yml`). The `build-result` gate job always reports a status so required checks pass even when build is skipped.
+- `release.yml` — tag push `v*` + manual dispatch. Builds firmware then creates a draft prerelease. Uses `paths-ignore` for keymap-drawer files.
+- `draw-keymaps-unified.yml` — push to main + PRs targeting main + manual dispatch. Only triggers on keymap-relevant path changes (`config/*.keymap`, `config/*.dtsi`, `keymap_drawer.config.yaml`, `keymap-drawer/merge_layers.py`). On main: opens a PR via `peter-evans/create-pull-request`. On branches: auto-commits via `stefanzweifel/git-auto-commit-action`.
+
+All build/release workflows call ZMK's reusable workflow (`zmkfirmware/zmk/.github/workflows/build-user-config.yml`). `build.yaml` defines the build matrix. Dongle halves override central role: `cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`.
 
 `make dfu` packages firmware for dongle flashing; `make flash` flashes interactively via serial. Requires `nrfutil nrf5sdk-tools`.
+
+### GitHub Actions Gotchas
+
+- `timeout-minutes` is NOT valid on jobs that call reusable workflows via `uses:`. Only jobs with `runs-on` + `steps` support it. GitHub fails the entire workflow run at validation with no useful error message.
+- When `paths-ignore` causes a workflow to skip entirely, required status checks never report — blocking PR merges. Use `dorny/paths-filter` inside the workflow instead, so the check always reports (as passed/skipped).
+- `peter-evans/create-pull-request@v7` has built-in no-change detection — it won't create a PR or push if the working tree is clean. No need for explicit guards.
 
 ## Keymap
 
@@ -18,7 +30,13 @@ Each layer has QMK-style comment blocks above `bindings` showing visual layout �
 
 ## Fork Context
 
-This repo is Perry's fork (`perrwa/zmk-config`). The dongle board component comes from `rschenk/zmk-component-raytac-dongle` — Perry's fork is `perrwa/zmk-component-raytac-dongle`. Always target the fork for issues, PRs, and pushes unless explicitly told to work on upstream.
+This repo is Perry's fork (`perrwa/zmk-config`). Always target the fork for issues, PRs, and pushes unless explicitly told to work on upstream.
+
+The dongle board component comes from `rschenk/zmk-component-raytac-dongle` — Perry's fork is `perrwa/zmk-component-raytac-dongle`. When creating issues or PRs for the dongle board, always use `perrwa/zmk-component-raytac-dongle`, not rschenk's upstream. Double-check the `--repo` flag on `gh` commands — the CLI may default to upstream if the local clone's `origin` points there.
+
+### Multi-Board Context
+
+`main` builds the **RX** dongle variant (`mdbt50q_rx` via `rschenk/zmk-component-raytac-dongle`). **CX40** dongle work lives on feature branches with a modified `config/west.yml` pointing to the CX40 board component (`perrwa/zmk-component-raytac-dongle`). Don't assume feature branches targeting CX40 have been integrated into main — they are separate hardware targets.
 
 ## Dongle BLE
 
@@ -27,3 +45,7 @@ This repo is Perry's fork (`perrwa/zmk-config`). The dongle board component come
 ## Testing Changes
 
 There is no local ZMK toolchain. To test changes, push the branch and watch GitHub Actions: `gh run watch` or check the Actions tab. Debug CI failures by reading job logs with `gh run view --log-failed`.
+
+## ZMK Build System
+
+Board-specific defconfig and DTS changes must go in the board component module (`perrwa/zmk-component-raytac-dongle`), not in `config/boards/` within zmk-config. ZMK's reusable build workflow passes `-DZMK_CONFIG=/tmp/zmk-config/config` — board `.conf` file resolution follows Zephyr's rules for west modules, not the zmk-config `config/` directory.
