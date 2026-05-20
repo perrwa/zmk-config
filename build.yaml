@@ -1,19 +1,17 @@
 ---
 include:
-  - board: nice_nano_v2
+  - board: blecorne_left
+    shield: settings_reset
+  - board: blecorne_right
     shield: settings_reset
 
-  - board: raytac_mdbt50q_rx
+  - board: mdbt50q_cx_40
     shield: corne_dongle
-  - board: raytac_mdbt50q_rx
+  - board: mdbt50q_cx_40
     shield: settings_reset
 
   # Dongle setup: both halves are peripherals (dongle is central)
-  - board: nice_nano_v2
-    shield: corne_left
+  - board: blecorne_left
     cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
-    artifact-name: corne_dongle_left-zmk
-  - board: nice_nano_v2
-    shield: corne_right
+  - board: blecorne_right
     cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
-    artifact-name: corne_dongle_right-zmk

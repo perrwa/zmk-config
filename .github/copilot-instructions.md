@@ -1,6 +1,6 @@
 # Copilot Instructions
 
-Split Corne-Cherry v3.0.1 ZMK keyboard config. Nice!Nano v2 halves + Raytac MDBT50Q-RX dongle (BLE central). West manifest pins ZMK v0.3 + `rschenk/zmk-component-raytac-dongle`.
+Split Corne-Cherry v3.0.1 ZMK keyboard config. Nice!Nano v2 halves + Raytac MDBT50Q-CX-40 dongle (BLE central). West manifest tracks ZMK main (v0.4) + `perrwa/zmk-component-raytac-dongle`.
 
 ## Build
 

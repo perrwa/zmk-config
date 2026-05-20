@@ -2,15 +2,20 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
-    - name: rschenk
-      url-base: https://github.com/rschenk
+    - name: perrwa
+      url-base: https://github.com/perrwa
+    - name: boardsource
+      url-base: https://github.com/boardsource
   projects:
     - name: zmk
       remote: zmkfirmware
-      revision: v0.3
+      revision: main
       import: app/west.yml
     - name: zmk-component-raytac-dongle
-      remote: rschenk
-      revision: v0.3
+      remote: perrwa
+      revision: 852f71077c62b1c54a39f24948e9739f34acacb0
+    - name: wireless-corne_zmk_config
+      remote: boardsource
+      revision: 2158104902e164c317e35f53dfa0ca1e36e1a751
   self:
     path: config

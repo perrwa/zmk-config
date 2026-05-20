@@ -34,7 +34,7 @@ jobs:
     if: always() && (needs.check-changes.outputs.firmware == 'true' || needs.check-changes.result == 'skipped')
     permissions:
       contents: read
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
     with:
       fallback_binary: hex
 
