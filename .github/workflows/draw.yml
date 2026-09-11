@@ -33,43 +33,42 @@ jobs:
         with:
           ref: ${{ github.head_ref || github.ref }}
 
-      - name: Install keymap-drawer
-        run: pipx install keymap-drawer
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
 
-      - name: Install west
-        run: pipx install west
+      - name: Install dependencies
+        run: uv sync --frozen
 
       - name: Fetch west modules
         # keymap-drawer bundles ZMK bindings, so we exclude zmk and zephyr
         # to speed up the fetch — only the dongle module is needed here.
         run: |
-          west init -l config
-          west config --local manifest.project-filter " -zmk,-zephyr"
-          west update --fetch-opt=--filter=tree:0
+          uv run west init -l config
+          uv run west config --local manifest.project-filter " -zmk,-zephyr"
+          uv run west update --fetch-opt=--filter=tree:0
 
       - name: Parse keymap
         run: >
-          keymap -c keymap_drawer.config.yaml parse -z config/corne.keymap
+          uv run keymap -c keymap_drawer.config.yaml parse -z config/corne.keymap
           --layer-names Base Symbols Nav Numpad
           > keymap-drawer/corne.yaml
 
       - name: Draw standard SVG
         run: >
-          keymap -c keymap_drawer.config.yaml draw keymap-drawer/corne.yaml
+          uv run keymap -c keymap_drawer.config.yaml draw keymap-drawer/corne.yaml
           > keymap-drawer/corne.svg
-
-      - name: Install merge script dependencies
-        run: pip install pyyaml
 
       - name: Merge layers into unified view
         run: >
-          python keymap-drawer/merge_layers.py keymap-drawer/corne.yaml
+          uv run python keymap-drawer/merge_layers.py keymap-drawer/corne.yaml
           --output-layer perrwa/corne
           > keymap-drawer/corne-unified.yaml
 
       - name: Draw unified SVG
         run: >
-          keymap -c keymap_drawer.config.yaml draw keymap-drawer/corne-unified.yaml
+          uv run keymap -c keymap_drawer.config.yaml draw keymap-drawer/corne-unified.yaml
           > keymap-drawer/corne-unified.svg
 
       - name: Open PR with updated visualizations

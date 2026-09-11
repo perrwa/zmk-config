@@ -1,0 +1,10 @@
+[project]
+name = "zmk-config-tools"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "keymap-drawer",
+    "west",
+    "pyyaml",
+    "tree-sitter<0.25",
+]
