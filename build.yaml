@@ -16,9 +16,5 @@ include:
   # Dongle setup: both halves are peripherals (dongle is central)
   - board: nice_nano_v2
     shield: corne_left
-    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
-    artifact-name: corne_dongle_left-zmk
   - board: nice_nano_v2
     shield: corne_right
-    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
-    artifact-name: corne_dongle_right-zmk
