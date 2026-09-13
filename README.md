@@ -6,7 +6,7 @@
 
 - **Corne-Cherry v3.0.1** — split 3×6+3 keyboard ([foostan/crkbd](https://github.com/foostan/crkbd))
 - **Nice!Nano v2** — controllers for each half (BLE peripherals)
-- **Raytac MDBT50Q-RX** — USB dongle running as BLE central ([rschenk/zmk-component-raytac-dongle](https://github.com/rschenk/zmk-component-raytac-dongle))
+- **Raytac MDBT50Q-RX** or **MDBT50Q-CX-40** — USB dongle running as BLE central ([rschenk/zmk-component-raytac-dongle](https://github.com/rschenk/zmk-component-raytac-dongle)); firmware for both is built from the same config
 
 ## Keymap
 
@@ -33,13 +33,13 @@ All builds run in GitHub Actions — no local toolchain needed.
 
 The build matrix (`build.yaml`) produces firmware for:
 
-- **Dongle** — `corne_dongle` shield on `raytac_mdbt50q_rx`
+- **Dongle** — `corne_dongle` shield on `raytac_mdbt50q_rx` and `raytac_mdbt50q_cx_40` (each advertises under its own BLE name — `perrwa-crkbd-RX` / `perrwa-crkbd-CX` — so they're distinguishable when pairing)
 - **Left/Right halves** — `corne_left`/`corne_right` on `nice_nano_v2` with `-DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`
-- **Settings reset** — for both boards
+- **Settings reset** — for all boards
 
 ### Dongle flashing
 
-The `Makefile` handles DFU packaging and serial flashing for the Raytac dongle (requires `nrfutil nrf5sdk-tools`):
+The `Makefile` handles DFU packaging and serial flashing for either Raytac dongle (requires `nrfutil nrf5sdk-tools`):
 
 ```
 make dfu      # Package .bin/.hex → .zip DFU bundles
