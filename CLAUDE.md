@@ -1,6 +1,6 @@
-# Copilot Instructions
+# Agent Instructions
 
-Split Corne-Cherry v3.0.1 ZMK keyboard config. Nice!Nano v2 halves + Raytac MDBT50Q-RX dongle (BLE central). West manifest pins ZMK v0.3 + `rschenk/zmk-component-raytac-dongle`.
+Split Corne-Cherry v3.0.1 ZMK keyboard config. Nice!Nano v2 halves + Raytac MDBT50Q-RX or MDBT50Q-CX-40 dongle (BLE central). West manifest pins ZMK v0.3 + `rschenk/zmk-component-raytac-dongle@refs/heads/v0.3`.
 
 ## Build
 
@@ -19,6 +19,7 @@ All build/release workflows call ZMK's reusable workflow (`zmkfirmware/zmk/.gith
 - `timeout-minutes` is NOT valid on jobs that call reusable workflows via `uses:`. Only jobs with `runs-on` + `steps` support it. GitHub fails the entire workflow run at validation with no useful error message.
 - When `paths-ignore` causes a workflow to skip entirely, required status checks never report — blocking PR merges. Use `dorny/paths-filter` inside the workflow instead, so the check always reports (as passed/skipped).
 - `peter-evans/create-pull-request@v7` has built-in no-change detection — it won't create a PR or push if the working tree is clean. No need for explicit guards.
+- West manifest `revision:` for a project is a raw git revision, so a bare name like `v0.3` is ambiguous if the remote has both a branch and a tag by that name — git's ref-resolution precedence prefers the tag, silently. `rschenk/zmk-component-raytac-dongle` has exactly this: a `v0.3` tag cut before the CX-40 board files were added, and a `v0.3` branch that has them. Pinning `revision: v0.3` fetched the stale tag and made `raytac_mdbt50q_cx_40` fail CMake's board resolution ("Invalid BOARD") while `raytac_mdbt50q_rx` (present since before the tag) built fine — a confusing signal since nothing in the repo's own files was wrong. Use the fully-qualified `refs/heads/<name>` (or `refs/tags/<name>`) to disambiguate whenever a remote might have overlapping branch/tag names.
 
 ## Keymap
 
@@ -36,7 +37,9 @@ The dongle board component comes from `rschenk/zmk-component-raytac-dongle` — 
 
 ### Multi-Board Context
 
-`main` builds the **RX** dongle variant (`mdbt50q_rx` via `rschenk/zmk-component-raytac-dongle`). **CX40** dongle work lives on feature branches with a modified `config/west.yml` pointing to the CX40 board component (`perrwa/zmk-component-raytac-dongle`). Don't assume feature branches targeting CX40 have been integrated into main — they are separate hardware targets.
+`main` builds **both** dongle variants — `raytac_mdbt50q_rx` and `raytac_mdbt50q_cx_40` — from the single `rschenk/zmk-component-raytac-dongle` module pinned in `config/west.yml`; that module tree already ships board files for both, so no remote/module change is needed to add a dongle target, only a `build.yaml` matrix entry. Each board gets its own BLE advertise name via `boards/shields/corne_dongle/boards/<board>.conf` (Zephyr's shield-scoped board override, merged after `corne_dongle.conf`) — `perrwa-crkbd-RX` / `perrwa-crkbd-CX` — so the two dongles are distinguishable when pairing.
+
+**CX40 on ZMK v0.4** (`blecorne` halves via `boardsource`, not the CX40 board above) is a separate, unrelated hardware/toolchain effort that lives on a feature branch. Don't assume it has been integrated into main.
 
 ## Dongle BLE
 
