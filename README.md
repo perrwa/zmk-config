@@ -28,13 +28,13 @@ All builds run in GitHub Actions — no local toolchain needed.
 | Workflow | Trigger | What it does |
 |----------|---------|--------------|
 | `build.yml` | PRs, manual dispatch | CI build for all targets |
-| `release.yml` | Tag push `v*`, manual dispatch | Builds firmware → draft prerelease |
-| `draw-keymaps-unified.yml` | Keymap/config changes | Regenerates keymap SVGs and YAML |
+| `release.yml` | Push to main, manual dispatch | Builds firmware → draft prerelease (auto-tags `vYY.MM.N`) |
+| `draw.yml` | Keymap/config changes | Regenerates keymap SVGs and YAML |
 
 The build matrix (`build.yaml`) produces firmware for:
 
-- **Dongle** — `corne_dongle` shield on `raytac_mdbt50q_rx` and `raytac_mdbt50q_cx_40` (each advertises under its own BLE name — `perrwa-crkbd-RX` / `perrwa-crkbd-CX` — so they're distinguishable when pairing)
-- **Left/Right halves** — `corne_left`/`corne_right` on `nice_nano_v2` with `-DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`
+- **Dongle** — `corne_dongle` shield on `raytac_mdbt50q_rx` and `raytac_mdbt50q_cx_40` (each advertises under its own BLE name — `perrwa-crkbd-rx` / `perrwa-crkbd-cx` — so they're distinguishable when pairing)
+- **Left/Right halves** — `corne_left`/`corne_right` on `nice_nano_v2` (peripheral role set via `CONFIG_ZMK_SPLIT_ROLE_CENTRAL=n` in `config/corne.conf`)
 - **Settings reset** — for all boards
 
 ### Dongle flashing
