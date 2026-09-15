@@ -2,18 +2,17 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
-    - name: rschenk
-      url-base: https://github.com/rschenk
+    - name: perrwa
+      url-base: https://github.com/perrwa
   projects:
     - name: zmk
       remote: zmkfirmware
-      revision: v0.3
+      # ZMK v0.4 is not tagged yet (latest tag is v0.3.0) — track main to
+      # verify the HWMv2 board definitions ahead of the actual release.
+      revision: main
       import: app/west.yml
     - name: zmk-component-raytac-dongle
-      remote: rschenk
-      # rschenk's fork has both a branch and a tag named "v0.3"; git prefers
-      # the tag when a revision name is ambiguous, and that tag predates the
-      # CX-40 board files. Pin the full ref path so west tracks the branch.
-      revision: refs/heads/v0.3
+      remote: perrwa
+      revision: refs/heads/perrwa/zmk0.4-upgrade
   self:
     path: config
