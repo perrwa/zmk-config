@@ -54,17 +54,25 @@ The dongle board component comes from `rschenk/zmk-component-raytac-dongle` — 
 | Protection | rulesets active — PR + `build-result` required | unprotected — direct commits, no PR/branch convention |
 | Releases | `release.yml`, `vYY.MM.N` tags | none — CI build artifacts only |
 | CI trigger | PR to main | push to branch |
+| Extra hardware | none | BLE Corne (`blecorne_left`/`blecorne_right`) — see below |
 
 Sync direction is `main` → `zmk-v0.4` via merge, never rebase (no force-push to either branch — the branch may have local work). Intentionally-divergent files — don't let a sync silently clobber these:
 
 - `config/west.yml`, `build.yaml`
-- `config/corne.conf` (on `main`, also carries `CONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`); `config/corne_left.conf`/`corne_right.conf` (exist only on `zmk-v0.4`, carry that same setting there instead — see [Keyboard `.conf`](#keyboard-conf))
+- `config/corne.conf` (on `main`, also carries `CONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`); `config/corne_left.conf`/`corne_right.conf` (exist only on `zmk-v0.4`, carry that same setting there instead — see [Keyboard `.conf`](#keyboard-conf)). On `zmk-v0.4`, `corne.conf` also carries `CONFIG_ZMK_STUDIO=n` and blecorne-generalized wording that `main` doesn't need (`main` doesn't build blecorne).
+- `config/blecorne*` (`.keymap`, `.conf`, `_left.conf`, `_right.conf`, `.overlay`) — exist only on `zmk-v0.4`; see [BLE Corne](#ble-corne-blecorne) below.
 - `boards/shields/corne_dongle/boards/*.conf` — renamed, not just edited (`raytac_mdbt50q_{rx,cx_40}.conf` on `main` vs `mdbt50q_{rx,cx_40}.conf` on `zmk-v0.4`)
 - both `release.yml` and `build.yml`'s `build-user-config.yml` ref (`@main` on this branch vs `@v0.3` on main)
 
 `release.yml` is not branch-aware: its concurrency group is the literal string `release` and its tag search (`git tag -l`) is repo-global. If releases are ever enabled on `zmk-v0.4`, both need fixing first or a same-month release from each branch will collide into one `vYY.MM.N` sequence.
 
-Boardsource's own BLE Corne (`blecorne` board, from `boardsource/wireless-corne_zmk_config`) is unrelated hardware and does not live in this repo.
+### BLE Corne (`blecorne`)
+
+Boardsource Wireless Corne SMT — a second, independent keyboard on `zmk-v0.4`, not a variant of the Corne-Cherry. `zmk-v0.4`-only: its board files (`boardsource/wireless-corne_zmk_config`, pulled in as a west module in `config/west.yml`, board files only — no `import:`) use the HWMv2 format and that repo's own manifest pins ZMK `main`, so they won't build against `main`'s frozen `v0.3` tag. Unlike the dongle module, this one **isn't forked** — board-level defconfig/DTS changes would need an upstream PR or a fork, not a local edit.
+
+It shares the same three-device dongle-central topology as the Corne-Cherry halves, and — because it uses the identical `foostan_corne_6col_layout` physical layout and 42-key transform (including the same `col-offset = <6>` right-half mirroring ZMK's own upstream `corne_right.overlay` uses, which is a correct pattern, not a bug) — the existing `corne_dongle` firmware images work for it unmodified. There's no `blecorne_dongle` shield or build target; a third physical Raytac dongle is flashed with the existing `corne_dongle` image and paired to blecorne independently (same BLE advertised name as whichever existing dongle shares its board type — fine, since pairing is by bond, not name).
+
+`config/blecorne.keymap`, `blecorne.conf`, `blecorne_left.conf`, and `blecorne_right.conf` are symlinks to the corresponding `corne*` files — same bindings, same settings apply cleanly. This overrides `blecorne_left`'s own board `Kconfig.defconfig`, which (assuming standalone use) defaults it to `CONFIG_ZMK_SPLIT_ROLE_CENTRAL=y` and enables Studio/USB; the symlinked `corne_left.conf`/`corne.conf` force `n` for the dongle-central topology (also disabling Studio there, since on-device keymap edits would diverge from git). `config/blecorne.overlay` is a real file — BLE Corne's devicetree defines no `ext_power` node, but `corne.keymap`'s Numpad layer binds `&ext_power EP_OFF`; it's wired to GPIO 0.31, the expansion-header VCC switch pin documented in Boardsource's README (real behavior — cuts power to expansion-header peripherals, not the MCU/BLE — since `zmk,ext-power-generic` requires `control-gpios`, so a true no-op isn't possible).
 
 ## Dongle BLE
 
@@ -72,7 +80,7 @@ Boardsource's own BLE Corne (`blecorne` board, from `boardsource/wireless-corne_
 
 ## Keyboard `.conf`
 
-`config/corne.conf` holds half-side (peripheral) settings shared by both branches, applied regardless of board/shield: a 30-minute `CONFIG_ZMK_IDLE_SLEEP_TIMEOUT` (default is 15 min), RGB underglow/backlight disabled (soldered SMT LEDs draw ~12 mA quiescent even "off"; VCC to the LED rail is separately gated via `ext_power` `EP_OFF` on the nice!nano v2), `CONFIG_ZMK_BATTERY_REPORTING=y`, and `CONFIG_ZMK_BLE_EXPERIMENTAL_CONN=y` to disable the 2M PHY for better 2.4 GHz interference resistance.
+`config/corne.conf` holds half-side (peripheral) settings shared by both branches, applied regardless of board/shield: a 30-minute `CONFIG_ZMK_IDLE_SLEEP_TIMEOUT` (default is 15 min), RGB underglow/backlight disabled (inert no-ops — neither keyboard sharing this file defines a WS2812 or backlight devicetree node), `CONFIG_ZMK_BATTERY_REPORTING=y`, `CONFIG_ZMK_BLE_EXPERIMENTAL_CONN=y` to disable the 2M PHY for better 2.4 GHz interference resistance, and (on `zmk-v0.4` only) `CONFIG_ZMK_STUDIO=n` to override `blecorne_left`'s board default. On `zmk-v0.4`, `config/blecorne.conf` symlinks to this file — see [BLE Corne](#ble-corne-blecorne).
 
 Two settings live in different places per branch:
 
