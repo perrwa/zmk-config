@@ -1,5 +1,7 @@
 name: Build ZMK firmware
 on:
+  push:
+    branches: [zmk-v0.4]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -10,7 +12,7 @@ concurrency:
 
 jobs:
   check-changes:
-    if: github.event_name == 'pull_request'
+    if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:

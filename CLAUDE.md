@@ -6,7 +6,7 @@ Split Corne-Cherry v3.0.1 ZMK keyboard config. Nice!Nano v2 halves + Raytac MDBT
 
 No local build/test. Three GitHub Actions workflows:
 
-- `build.yml` — CI on PRs to main + manual dispatch. Has a `check-changes` gate using `dorny/paths-filter` so the build job only runs when firmware-relevant files change (`config/`, `boards/`, `build.yaml`, `zephyr/`, `build.yml`). The `build-result` gate job always reports a status so required checks pass even when build is skipped.
+- `build.yml` — CI on PRs to main, pushes to `zmk-v0.4`, + manual dispatch. Has a `check-changes` gate using `dorny/paths-filter` so the build job only runs when firmware-relevant files change (`config/`, `boards/`, `build.yaml`, `zephyr/`, `build.yml`) — applies to both the PR and push triggers; `workflow_dispatch` always builds. The `build-result` gate job always reports a status so required checks pass even when build is skipped.
 - `release.yml` — push to main (with `paths-ignore` for keymap-drawer files) + manual dispatch. Builds firmware, then computes a `vYY.MM.N` tag (incrementing `N` off the latest matching tag via `git tag -l`) unless dispatch supplies an existing `tag` input, and creates a draft prerelease. No tag push triggers it — the workflow creates the tag.
 - `draw.yml` — push to main + PRs targeting main + manual dispatch. Only triggers on keymap-relevant path changes (`config/*.keymap`, `config/*.dtsi`, `keymap_drawer.config.yaml`, `keymap-drawer/merge_layers.py`). On main: opens a PR via `peter-evans/create-pull-request`. On branches: auto-commits via `stefanzweifel/git-auto-commit-action`. Layer names passed to `keymap parse` (`--layer-names Base Symbols Nav Numpad`) must be updated in this workflow if a layer is renamed in the keymap.
 
@@ -39,7 +39,24 @@ The dongle board component comes from `rschenk/zmk-component-raytac-dongle` — 
 
 `main` builds **both** dongle variants — `raytac_mdbt50q_rx` and `raytac_mdbt50q_cx_40` — from the single `rschenk/zmk-component-raytac-dongle` module pinned in `config/west.yml`; that module tree already ships board files for both, so no remote/module change is needed to add a dongle target, only a `build.yaml` matrix entry. Each board gets its own BLE advertise name via `boards/shields/corne_dongle/boards/<board>.conf` (Zephyr's shield-scoped board override, merged after `corne_dongle.conf`) — `perrwa-crkbd-rx` / `perrwa-crkbd-cx` (lowercase; `CONFIG_ZMK_KEYBOARD_NAME` has a 16-char limit) — so the two dongles are distinguishable when pairing.
 
-**CX40 on ZMK v0.4** (`blecorne` halves via `boardsource`, not the CX40 board above) is a separate, unrelated hardware/toolchain effort that lives on a feature branch. Don't assume it has been integrated into main.
+### ZMK v0.4 Branch
+
+`zmk-v0.4` is a long-lived branch tracking ZMK's `main` (v0.4 is unreleased; latest tag is v0.3.0) — used to verify HWMv2 board definitions ahead of the actual release. It builds the same matrix as `main` (both Raytac dongle boards + halves), not a different keyboard.
+
+| | `main` | `zmk-v0.4` |
+|---|---|---|
+| ZMK revision | `v0.3` tag | `main` (moving, not reproducible) |
+| Dongle module | `rschenk/zmk-component-raytac-dongle@refs/heads/v0.3` | `perrwa/zmk-component-raytac-dongle@refs/heads/main` |
+| Board names | `raytac_mdbt50q_rx` / `raytac_mdbt50q_cx_40` | `mdbt50q_rx` / `mdbt50q_cx_40` / `nice_nano//zmk` (HWMv2 naming) |
+| Protection | rulesets active — PR + `build-result` required | unprotected — direct commits, no PR/branch convention |
+| Releases | `release.yml`, `vYY.MM.N` tags | none — CI build artifacts only |
+| CI trigger | PR to main | push to branch |
+
+Sync direction is `main` → `zmk-v0.4` via merge, never rebase (no force-push to either branch — the branch may have local work). Intentionally-divergent files: `config/west.yml`, `build.yaml`, `config/corne*.conf`, `boards/shields/corne_dongle/boards/*.conf`, and `release.yml`'s `build-user-config.yml` ref (`@main` on this branch vs `@v0.3` on main) — don't let a sync silently clobber these.
+
+`release.yml` is not branch-aware: its concurrency group is the literal string `release` and its tag search (`git tag -l`) is repo-global. If releases are ever enabled on `zmk-v0.4`, both need fixing first or a same-month release from each branch will collide into one `vYY.MM.N` sequence.
+
+Boardsource's own BLE Corne (`blecorne` board, from `boardsource/wireless-corne_zmk_config`) is unrelated hardware and does not live in this repo.
 
 ## Dongle BLE
 
