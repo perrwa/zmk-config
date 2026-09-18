@@ -1,5 +1,8 @@
 # ZMK Config
 
+[![ZMK v0.3 build](https://img.shields.io/github/actions/workflow/status/perrwa/zmk-config/release.yml?branch=main&label=ZMK%20v0.3%20build)](https://github.com/perrwa/zmk-config/actions/workflows/release.yml)
+[![ZMK v0.4 build](https://img.shields.io/github/actions/workflow/status/perrwa/zmk-config/build.yml?branch=zmk-v0.4&label=ZMK%20v0.4%20build)](https://github.com/perrwa/zmk-config/actions/workflows/build.yml)
+
 [ZMK Firmware](https://zmk.dev/) configuration for a split Corne-Cherry v3.0.1 keyboard with a BLE dongle acting as the central receiver.
 
 ## Hardware
@@ -25,7 +28,7 @@ Four layers with mod-tap (`&mt`) and layer-tap (`&lt`) thumb keys:
 
 ## Build & Firmware
 
-All builds run in GitHub Actions, no local toolchain needed. `build.yaml` is the source of truth for board names; the long-lived `zmk-v0.4` branch tracks unreleased ZMK and uses newer HWMv2 board names (`mdbt50q_rx`, not `raytac_mdbt50q_rx`).
+All builds run in GitHub Actions, no local toolchain needed. `build.yaml` is the source of truth for board names; the long-lived `zmk-v0.4` branch tracks unreleased ZMK and uses newer HWMv2 board names (`mdbt50q_rx`, not `raytac_mdbt50q_rx`). `build.yml` never runs on `main` (only PRs and pushes to `zmk-v0.4`), so `main`'s build status badge above tracks `release.yml` instead — it builds the same firmware on every push to `main`.
 
 | Workflow | Trigger | What it does |
 |----------|---------|--------------|
