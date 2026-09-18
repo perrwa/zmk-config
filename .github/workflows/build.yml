@@ -16,10 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
+      contents: read
       pull-requests: read
     outputs:
       firmware: ${{ steps.filter.outputs.firmware }}
     steps:
+      # push events need local git history to diff before/after; pull_request
+      # events don't (paths-filter queries the GitHub API instead) but the
+      # checkout is harmless there too.
+      - uses: actions/checkout@v4
+        if: github.event_name == 'push'
       - uses: dorny/paths-filter@v3
         id: filter
         with:
