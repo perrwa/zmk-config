@@ -18,3 +18,13 @@ include:
     shield: corne_left
   - board: nice_nano//zmk
     shield: corne_right
+
+  # BLE Corne (blecorne): a second, independent keyboard on the same
+  # dongle-central topology. Rides the existing corne_dongle firmware
+  # above — same physical layout, same keymap — no dongle build of its own.
+  - board: blecorne_left
+  - board: blecorne_right
+  - board: blecorne_left
+    shield: settings_reset
+  - board: blecorne_right
+    shield: settings_reset
