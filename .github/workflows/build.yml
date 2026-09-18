@@ -29,6 +29,13 @@ jobs:
       - uses: dorny/paths-filter@v3
         id: filter
         with:
+          # Unset (empty) on pull_request keeps the default PR-base diff.
+          # paths-filter's own default base on push is the repo's default
+          # branch, not "since last push" — on a branch that permanently
+          # diverges from main (zmk-v0.4) that means every push reports
+          # changed files, defeating the skip. Pass the pre-push SHA
+          # explicitly so push events diff their own recent history.
+          base: ${{ github.event_name == 'push' && github.event.before || '' }}
           filters: |
             firmware:
               - 'config/**'
