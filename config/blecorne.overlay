@@ -1,14 +1,21 @@
 /*
- * BLE Corne's devicetree defines no ext_power node, but the expansion
- * header's VCC (pin 5) is switched via GPIO 0.31 per Boardsource's README
- * — identical, non-mirrored pinout on both halves. Wiring ext_power here
- * lets corne.keymap's &ext_power EP_OFF binding (Numpad layer) resolve;
- * real behavior, not a stub — it cuts power to anything on the expansion
- * header (nice!view, etc.), never the MCU or BLE.
+ * BLE Corne's devicetree defines no ext_power driver node, but the
+ * expansion header's VCC (pin 5) is switched via GPIO 0.31 per
+ * Boardsource's README — identical, non-mirrored pinout on both halves.
+ * Adding it here lets corne.keymap's &ext_power EP_OFF binding (Numpad
+ * layer) resolve; real behavior, not a stub — it cuts power to anything
+ * on the expansion header (nice!view, etc.), never the MCU or BLE.
+ *
+ * Node name only, no label: ZMK's own behaviors.dtsi already defines the
+ * `ext_power` *label* globally on the &ext_power behavior node that
+ * keymaps actually reference — a second node with that label collides
+ * ("Label 'ext_power' appears on /behaviors/extpower and on /ext_power").
+ * ZMK's own nice_nano/nrfmicro overlays name this driver node bare
+ * `EXT_POWER`, matched here.
  */
 
 / {
-    ext_power: ext_power {
+    EXT_POWER {
         compatible = "zmk,ext-power-generic";
         control-gpios = <&gpio0 31 GPIO_ACTIVE_HIGH>;
     };
