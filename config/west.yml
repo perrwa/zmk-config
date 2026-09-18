@@ -22,8 +22,9 @@ manifest:
       remote: boardsource
       # Only consumed for its board files (boards/boardsource/blecorne/,
       # picked up via its own zephyr/module.yml board_root: .) — no
-      # `import:`, so its own ZMK pin is irrelevant to us. Tracks main since
-      # its HWMv2 board format requires it, same as our own ZMK pin above.
-      revision: refs/heads/main
+      # `import:`, so its own ZMK pin is irrelevant to us. Tracks its
+      # default branch (named `master`, not `main`) since its HWMv2 board
+      # format requires ZMK main, same as our own ZMK pin above.
+      revision: refs/heads/master
   self:
     path: config
