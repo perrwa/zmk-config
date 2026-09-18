@@ -13,6 +13,8 @@ manifest:
       import: app/west.yml
     - name: zmk-component-raytac-dongle
       remote: perrwa
-      revision: refs/heads/perrwa/zmk0.4-upgrade
+      # Tracks the moving main branch (not the v0.4 tag, which predates the
+      # CX-40 board work) — builds on this branch are not reproducible.
+      revision: refs/heads/main
   self:
     path: config
