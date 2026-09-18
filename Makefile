@@ -50,10 +50,9 @@ flash:  ## Flash a selected DFU package to a selected serial port
 	echo "\nAvailable DFU packages:"; \
 	for i in $${!ZIPS[@]}; do echo "$$((i+1)): $${ZIPS[$$i]}"; done; \
 	read -p "Select DFU package [1-$${#ZIPS[@]}]: " zidx; \
-
 	PKG=$${ZIPS[$$(($$zidx-1))]}; \
 	echo "\nFlashing $$PKG to $$PORT..."; \
-	$(NRFUTIL) dfu usb-serial -pkg \"$$PKG\" -p \"$$PORT\"
+	$(NRFUTIL) dfu usb-serial -pkg "$$PKG" -p "$$PORT"
 
 clean:  ## Remove all generated .zip DFU packages
 	@rm -f $(DIR)/*.zip
