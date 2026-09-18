@@ -1,0 +1,15 @@
+/*
+ * BLE Corne's devicetree defines no ext_power node, but the expansion
+ * header's VCC (pin 5) is switched via GPIO 0.31 per Boardsource's README
+ * — identical, non-mirrored pinout on both halves. Wiring ext_power here
+ * lets corne.keymap's &ext_power EP_OFF binding (Numpad layer) resolve;
+ * real behavior, not a stub — it cuts power to anything on the expansion
+ * header (nice!view, etc.), never the MCU or BLE.
+ */
+
+/ {
+    ext_power: ext_power {
+        compatible = "zmk,ext-power-generic";
+        control-gpios = <&gpio0 31 GPIO_ACTIVE_HIGH>;
+    };
+};
