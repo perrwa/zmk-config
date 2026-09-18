@@ -4,6 +4,8 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: perrwa
       url-base: https://github.com/perrwa
+    - name: boardsource
+      url-base: https://github.com/boardsource
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -15,6 +17,13 @@ manifest:
       remote: perrwa
       # Tracks the moving main branch (not the v0.4 tag, which predates the
       # CX-40 board work) — builds on this branch are not reproducible.
+      revision: refs/heads/main
+    - name: wireless-corne_zmk_config
+      remote: boardsource
+      # Only consumed for its board files (boards/boardsource/blecorne/,
+      # picked up via its own zephyr/module.yml board_root: .) — no
+      # `import:`, so its own ZMK pin is irrelevant to us. Tracks main since
+      # its HWMv2 board format requires it, same as our own ZMK pin above.
       revision: refs/heads/main
   self:
     path: config
