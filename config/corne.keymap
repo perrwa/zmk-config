@@ -9,6 +9,16 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/ext_power.h>
 
+/*
+ * Layer names below (Base, Symbols, Nav, Numpad) are load-bearing for two
+ * downstream consumers, not just documentation:
+ *   - .github/workflows/draw.yml passes them positionally via
+ *     `keymap parse --layer-names Base Symbols Nav Numpad`
+ *   - keymap-drawer/merge_layers.py hard-codes the same four names and
+ *     exits non-zero on a mismatch
+ * Renaming or reordering a layer here requires updating both.
+ */
+
 / {
         keymap {
                 compatible = "zmk,keymap";

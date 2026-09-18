@@ -1,12 +1,14 @@
 # ZMK Config
 
-[ZMK Firmware](https://zmk.dev/) configuration for a split **Corne-Cherry v3.0.1** keyboard with a BLE dongle acting as the central receiver.
+[ZMK Firmware](https://zmk.dev/) configuration for a split Corne-Cherry v3.0.1 keyboard with a BLE dongle acting as the central receiver.
 
 ## Hardware
 
-- **Corne-Cherry v3.0.1** — split 3×6+3 keyboard ([foostan/crkbd](https://github.com/foostan/crkbd))
-- **Nice!Nano v2** — controllers for each half (BLE peripherals)
-- **Raytac MDBT50Q-RX** or **MDBT50Q-CX-40** — USB dongle running as BLE central ([rschenk/zmk-component-raytac-dongle](https://github.com/rschenk/zmk-component-raytac-dongle)); firmware for both is built from the same config
+| Part | Role |
+|------|------|
+| Corne-Cherry v3.0.1 ([foostan/crkbd](https://github.com/foostan/crkbd)) | Split 3×6+3 keyboard |
+| Nice!Nano v2 | Controller for each half (BLE peripheral) |
+| Raytac MDBT50Q-RX or MDBT50Q-CX-40 | USB dongle running as BLE central ([rschenk/zmk-component-raytac-dongle](https://github.com/rschenk/zmk-component-raytac-dongle)); firmware for both is built from the same config |
 
 ## Keymap
 
@@ -23,19 +25,21 @@ Four layers with mod-tap (`&mt`) and layer-tap (`&lt`) thumb keys:
 
 ## Build & Firmware
 
-All builds run in GitHub Actions — no local toolchain needed.
+All builds run in GitHub Actions, no local toolchain needed. `build.yaml` is the source of truth for board names; the long-lived `zmk-v0.4` branch tracks unreleased ZMK and uses newer HWMv2 board names (`mdbt50q_rx`, not `raytac_mdbt50q_rx`).
 
 | Workflow | Trigger | What it does |
 |----------|---------|--------------|
 | `build.yml` | PRs to main, push to `zmk-v0.4`, manual dispatch | CI build for all targets |
-| `release.yml` | Push to main, manual dispatch | Builds firmware → draft prerelease (auto-tags `vYY.MM.N`) |
+| `release.yml` | Push to main, manual dispatch | Builds firmware, then a draft prerelease (auto-tags `vYY.MM.N`) |
 | `draw.yml` | Keymap/config changes | Regenerates keymap SVGs and YAML |
 
 The build matrix (`build.yaml`) produces firmware for:
 
-- **Dongle** — `corne_dongle` shield on `raytac_mdbt50q_rx` and `raytac_mdbt50q_cx_40` (each advertises under its own BLE name — `perrwa-crkbd-rx` / `perrwa-crkbd-cx` — so they're distinguishable when pairing)
-- **Left/Right halves** — `corne_left`/`corne_right` on `nice_nano_v2` (peripheral role set via `CONFIG_ZMK_SPLIT_ROLE_CENTRAL=n` in `config/corne.conf`)
-- **Settings reset** — for all boards
+| Target | Boards | Notes |
+|--------|--------|-------|
+| Dongle | `corne_dongle` shield on both Raytac boards | Each advertises under its own BLE name (`perrwa-crkbd-rx` / `perrwa-crkbd-cx`) so they're distinguishable when pairing |
+| Left/right halves | `corne_left`/`corne_right` shields on `nice_nano_v2` | Peripheral role is set explicitly in the halves' `.conf` files |
+| Settings reset | All boards | — |
 
 ### Dongle flashing
 
@@ -54,7 +58,7 @@ make clean    # Remove generated .zip packages
 ├── config/
 │   ├── corne.conf                 # Keyboard settings (sleep, battery, BLE)
 │   ├── corne.keymap               # Keymap (Devicetree syntax)
-│   └── west.yml                   # West manifest — ZMK v0.3 + Raytac dongle module
+│   └── west.yml                   # West manifest: ZMK + Raytac dongle module
 ├── keymap-drawer/                 # Auto-generated keymap visualizations
 │   ├── corne.svg / corne.yaml     # Per-layer output
 │   ├── corne-unified.svg / .yaml  # All layers merged into one view
@@ -74,4 +78,4 @@ make clean    # Remove generated .zip packages
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE).

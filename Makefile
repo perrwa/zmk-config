@@ -1,4 +1,4 @@
-# Makefile for packaging and flashing MDBT50Q-CX-40 Dongle
+# Makefile for packaging and flashing Raytac MDBT50Q-RX / MDBT50Q-CX-40 dongles
 
 # References
 # https://docs.zephyrproject.org/latest/boards/raytac/mdbt50q_cx_40_dongle/doc/index.html#

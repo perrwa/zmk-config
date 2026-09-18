@@ -1,16 +1,16 @@
 # Agent Instructions
 
-Split Corne-Cherry v3.0.1 ZMK keyboard config. Nice!Nano v2 halves + Raytac MDBT50Q-RX or MDBT50Q-CX-40 dongle (BLE central). West manifest pins ZMK v0.3 + `rschenk/zmk-component-raytac-dongle@refs/heads/v0.3`.
+Split Corne-Cherry v3.0.1 ZMK keyboard config. Nice!Nano v2 halves + Raytac MDBT50Q-RX or MDBT50Q-CX-40 dongle (BLE central). On `main`, the west manifest pins ZMK v0.3 + `rschenk/zmk-component-raytac-dongle@refs/heads/v0.3`; see [ZMK v0.4 Branch](#zmk-v04-branch) for what differs on `zmk-v0.4`.
 
 ## Build
 
 No local build/test. Three GitHub Actions workflows:
 
 - `build.yml` — CI on PRs to main, pushes to `zmk-v0.4`, + manual dispatch. Has a `check-changes` gate using `dorny/paths-filter` so the build job only runs when firmware-relevant files change (`config/`, `boards/`, `build.yaml`, `zephyr/`, `build.yml`) — applies to both the PR and push triggers; `workflow_dispatch` always builds. The `build-result` gate job always reports a status so required checks pass even when build is skipped.
-- `release.yml` — push to main (with `paths-ignore` for keymap-drawer files) + manual dispatch. Builds firmware, then computes a `vYY.MM.N` tag (incrementing `N` off the latest matching tag via `git tag -l`) unless dispatch supplies an existing `tag` input, and creates a draft prerelease. No tag push triggers it — the workflow creates the tag.
+- `release.yml` — push to main (with `paths-ignore` for keymap-drawer files) + manual dispatch. Builds firmware, then computes a `vYY.MM.N` tag (incrementing `N` off the latest matching tag via `git tag -l`) — or, on manual dispatch, uses the required `tag` input instead of computing one — and creates a draft prerelease. No tag push triggers it — the workflow creates the tag.
 - `draw.yml` — push to main + PRs targeting main + manual dispatch. Only triggers on keymap-relevant path changes (`config/*.keymap`, `config/*.dtsi`, `keymap_drawer.config.yaml`, `keymap-drawer/merge_layers.py`). On main: opens a PR via `peter-evans/create-pull-request`. On branches: auto-commits via `stefanzweifel/git-auto-commit-action`. Layer names passed to `keymap parse` (`--layer-names Base Symbols Nav Numpad`) must be updated in this workflow if a layer is renamed in the keymap.
 
-All build/release workflows call ZMK's reusable workflow (`zmkfirmware/zmk/.github/workflows/build-user-config.yml`). `build.yaml` defines the build matrix: `corne_dongle` on both Raytac boards, `corne_left`/`corne_right` on `nice_nano_v2`, and `settings_reset` on all three boards. There's no `cmake-args` central-role override in `build.yaml` — the halves get `CONFIG_ZMK_SPLIT_ROLE_CENTRAL=n` from `config/corne.conf` (see below), which applies regardless of board/shield.
+All build/release workflows call ZMK's reusable workflow (`zmkfirmware/zmk/.github/workflows/build-user-config.yml`). `build.yaml` defines the build matrix: `corne_dongle` on both Raytac boards, `corne_left`/`corne_right` on `nice_nano_v2`, and `settings_reset` on all three boards. There's no `cmake-args` central-role override in `build.yaml` — the halves get `CONFIG_ZMK_SPLIT_ROLE_CENTRAL=n` from a `.conf` file instead (see [Keyboard `.conf`](#keyboard-conf) below for which one, per branch), which applies regardless of board/shield.
 
 `make dfu` packages firmware for dongle flashing (auto-generates `private.pem` via the `has_key` target if missing); `make flash` flashes interactively via serial; `make clean` removes generated `.zip` packages. Requires `nrfutil nrf5sdk-tools`.
 
@@ -22,7 +22,7 @@ All build/release workflows call ZMK's reusable workflow (`zmkfirmware/zmk/.gith
 - West manifest `revision:` for a project is a raw git revision, so a bare name like `v0.3` is ambiguous if the remote has both a branch and a tag by that name — git's ref-resolution precedence prefers the tag, silently. `rschenk/zmk-component-raytac-dongle` has exactly this: a `v0.3` tag cut before the CX-40 board files were added, and a `v0.3` branch that has them. Pinning `revision: v0.3` fetched the stale tag and made `raytac_mdbt50q_cx_40` fail CMake's board resolution ("Invalid BOARD") while `raytac_mdbt50q_rx` (present since before the tag) built fine — a confusing signal since nothing in the repo's own files was wrong. Use the fully-qualified `refs/heads/<name>` (or `refs/tags/<name>`) to disambiguate whenever a remote might have overlapping branch/tag names.
 - `dorny/paths-filter@v3` needs a real checkout for `push` events (it diffs with local git) but not for `pull_request` events (it queries the GitHub API instead). `check-changes` in `build.yml` ran fine on PRs for months with no `actions/checkout` step; the first push-triggered run (adding the `zmk-v0.4` push trigger) failed with `fatal: not a git repository`. Gate the checkout step on `github.event_name == 'push'` rather than adding it unconditionally, so PR runs stay fast.
 - `dorny/paths-filter@v3`'s `base` input, left unset, defaults to the repo's *default branch* — not "since the last push" — unless `base` is explicitly the same ref as the one being pushed. On a branch that permanently diverges from `main` (like `zmk-v0.4`, where `config/west.yml`/`build.yaml`/etc. always differ), that default makes every push report changed firmware files regardless of what the push actually touched, silently defeating the skip-on-no-changes optimization. Set `base: ${{ github.event.before }}` explicitly for push events so it diffs against the actual pre-push commit.
-- `release.yml`'s `git tag -l "${PREFIX}.*"` only sees tags that actually exist in the checked-out repo — and GitHub does **not** create a real tag ref for a *draft* release, only on publish. So a repeated push to `main` while a `vYY.MM.N` draft is pending keeps recomputing the same tag name (the draft's tag isn't visible to `git tag -l` yet) and `softprops/action-gh-release` overwrites that same draft's artifacts/notes rather than creating a new release. This also means **any** push to `main` reruns the full release pipeline and touches the pending draft, including doc-only commits — `paths-ignore` only excludes `keymap-drawer/**` files, nothing else.
+- `release.yml`'s `git tag -l "${PREFIX}.*"` only sees tags that actually exist in the checked-out repo — and GitHub does **not** create a real tag ref for a *draft* release, only on publish. So a repeated push to `main` while a `vYY.MM.N` draft is pending keeps recomputing the same tag name (the draft's tag isn't visible to `git tag -l` yet) and `softprops/action-gh-release` overwrites that same draft's artifacts/notes rather than creating a new release. This also means **any** push to `main` reruns the full release pipeline and touches the pending draft, including doc-only commits — `paths-ignore` only excludes `keymap-drawer/**` and `keymap_drawer.config.yaml`, nothing else.
 
 ## Keymap
 
@@ -55,7 +55,12 @@ The dongle board component comes from `rschenk/zmk-component-raytac-dongle` — 
 | Releases | `release.yml`, `vYY.MM.N` tags | none — CI build artifacts only |
 | CI trigger | PR to main | push to branch |
 
-Sync direction is `main` → `zmk-v0.4` via merge, never rebase (no force-push to either branch — the branch may have local work). Intentionally-divergent files: `config/west.yml`, `build.yaml`, `config/corne*.conf`, `boards/shields/corne_dongle/boards/*.conf`, and `release.yml`'s `build-user-config.yml` ref (`@main` on this branch vs `@v0.3` on main) — don't let a sync silently clobber these.
+Sync direction is `main` → `zmk-v0.4` via merge, never rebase (no force-push to either branch — the branch may have local work). Intentionally-divergent files — don't let a sync silently clobber these:
+
+- `config/west.yml`, `build.yaml`
+- `config/corne.conf` (on `main`, also carries `CONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`); `config/corne_left.conf`/`corne_right.conf` (exist only on `zmk-v0.4`, carry that same setting there instead — see [Keyboard `.conf`](#keyboard-conf))
+- `boards/shields/corne_dongle/boards/*.conf` — renamed, not just edited (`raytac_mdbt50q_{rx,cx_40}.conf` on `main` vs `mdbt50q_{rx,cx_40}.conf` on `zmk-v0.4`)
+- both `release.yml` and `build.yml`'s `build-user-config.yml` ref (`@main` on this branch vs `@v0.3` on main)
 
 `release.yml` is not branch-aware: its concurrency group is the literal string `release` and its tag search (`git tag -l`) is repo-global. If releases are ever enabled on `zmk-v0.4`, both need fixing first or a same-month release from each branch will collide into one `vYY.MM.N` sequence.
 
@@ -67,7 +72,12 @@ Boardsource's own BLE Corne (`blecorne` board, from `boardsource/wireless-corne_
 
 ## Keyboard `.conf`
 
-`config/corne.conf` holds half-side (peripheral) settings, applied regardless of board/shield: `CONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`, a 30-minute `CONFIG_ZMK_IDLE_SLEEP_TIMEOUT` (default is 15 min), RGB underglow/backlight/`WS2812_STRIP` all disabled (soldered SMT LEDs draw ~12 mA quiescent even "off"; VCC to the LED rail is separately gated via `ext_power` `EP_OFF` on the nice!nano v2), and `CONFIG_ZMK_BLE_EXPERIMENTAL_CONN=y` to disable the 2M PHY for better 2.4 GHz interference resistance.
+`config/corne.conf` holds half-side (peripheral) settings shared by both branches, applied regardless of board/shield: a 30-minute `CONFIG_ZMK_IDLE_SLEEP_TIMEOUT` (default is 15 min), RGB underglow/backlight disabled (soldered SMT LEDs draw ~12 mA quiescent even "off"; VCC to the LED rail is separately gated via `ext_power` `EP_OFF` on the nice!nano v2), `CONFIG_ZMK_BATTERY_REPORTING=y`, and `CONFIG_ZMK_BLE_EXPERIMENTAL_CONN=y` to disable the 2M PHY for better 2.4 GHz interference resistance.
+
+Two settings live in different places per branch:
+
+- **`CONFIG_ZMK_SPLIT_ROLE_CENTRAL=n`**: on `main`, set in `config/corne.conf` itself. On `zmk-v0.4`, moved into `config/corne_left.conf` and `config/corne_right.conf` instead, because the stock corne shield's `Kconfig.defconfig` defaults `SHIELD_CORNE_LEFT` to central and `corne.conf` loads *before* the shield files — setting it there would end up overriding `corne_dongle.conf`'s `=y` on the dongle build.
+- **`CONFIG_WS2812_STRIP=n`**: set on `main` alongside the other RGB settings. Deliberately absent on `zmk-v0.4` — under Zephyr 4.1 the symbol was split into per-bus names (`WS2812_STRIP_SPI` etc.), so setting the old bare name is now a hard Kconfig error rather than a harmless no-op.
 
 ## Testing Changes
 
