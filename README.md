@@ -39,6 +39,7 @@ The build matrix (`build.yaml`) produces firmware for:
 |--------|--------|-------|
 | Dongle | `corne_dongle` shield on both Raytac boards | Each advertises under its own BLE name (`perrwa-crkbd-rx` / `perrwa-crkbd-cx`) so they're distinguishable when pairing |
 | Left/right halves | `corne_left`/`corne_right` shields on `nice_nano_v2` | Peripheral role is set explicitly in the halves' `.conf` files |
+| BLE Corne halves | `blecorne_left`/`blecorne_right` boards | `zmk-v0.4` only. A second, independent keyboard sharing the existing dongle above — see `CLAUDE.md` |
 | Settings reset | All boards | — |
 
 ### Dongle flashing
@@ -58,7 +59,9 @@ make clean    # Remove generated .zip packages
 ├── config/
 │   ├── corne.conf                 # Keyboard settings (sleep, battery, BLE)
 │   ├── corne.keymap               # Keymap (Devicetree syntax)
-│   └── west.yml                   # West manifest: ZMK + Raytac dongle module
+│   ├── blecorne.*                 # zmk-v0.4 only: symlinks to the corne.* files above,
+│   │                               # plus blecorne.overlay (ext_power node)
+│   └── west.yml                   # West manifest: ZMK + Raytac dongle module (+ blecorne on zmk-v0.4)
 ├── keymap-drawer/                 # Auto-generated keymap visualizations
 │   ├── corne.svg / corne.yaml     # Per-layer output
 │   ├── corne-unified.svg / .yaml  # All layers merged into one view
@@ -74,6 +77,7 @@ make clean    # Remove generated .zip packages
 - [ZMK Documentation](https://zmk.dev/docs/)
 - [Corne Keyboard (foostan/crkbd)](https://github.com/foostan/crkbd)
 - [Raytac Dongle ZMK Component (rschenk)](https://github.com/rschenk/zmk-component-raytac-dongle)
+- [Wireless Corne SMT / BLE Corne (boardsource)](https://github.com/boardsource/wireless-corne_zmk_config) — `zmk-v0.4` only
 - [keymap-drawer (caksoylar)](https://github.com/caksoylar/keymap-drawer)
 
 ## License
