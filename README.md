@@ -27,7 +27,7 @@ All builds run in GitHub Actions — no local toolchain needed.
 
 | Workflow | Trigger | What it does |
 |----------|---------|--------------|
-| `build.yml` | PRs, manual dispatch | CI build for all targets |
+| `build.yml` | PRs to main, push to `zmk-v0.4`, manual dispatch | CI build for all targets |
 | `release.yml` | Push to main, manual dispatch | Builds firmware → draft prerelease (auto-tags `vYY.MM.N`) |
 | `draw.yml` | Keymap/config changes | Regenerates keymap SVGs and YAML |
 
